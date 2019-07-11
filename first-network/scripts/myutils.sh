@@ -127,8 +127,8 @@ installChaincode() {
   res=$?
   set +x
   cat log.txt
-  verifyResult $res "Chaincode installation on peer${PEER}.org${ORG} has failed"
-  echo "===================== Chaincode is installed on peer${PEER}.org${ORG} ===================== "
+  verifyResult $res "Chaincode ${NAME}${NAME}  installation on peer${PEER}.org${ORG} has failed"
+  echo "===================== Chaincode ${NAME} is installed on peer${PEER}.org${ORG} ===================== "
   echo
 }
 
@@ -150,13 +150,13 @@ instantiateChaincode() {
     set +x
   else
     set -x
-    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${NAME} -l ${LANGUAGE} -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
+    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${NAME} -l ${LANGUAGE} -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')" >&log.txt
     res=$?
     set +x
   fi
   cat log.txt
-  verifyResult $res "Chaincode instantiation on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' failed"
-  echo "===================== Chaincode is instantiated on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
+  verifyResult $res "Chaincode ${NAME} instantiation on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' failed"
+  echo "===================== Chaincode ${NAME} is instantiated on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
   echo
 }
 
@@ -178,9 +178,9 @@ upgradeChaincode() {
 chaincodeQuery() {
   PEER=$1
   ORG=$2
-  NAME=$3
   setGlobals $PEER $ORG
   EXPECTED_RESULT=$3
+  NAME=$4
   echo "===================== Querying on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME'... ===================== "
   local rc=1
   local starttime=$(date +%s)
@@ -298,6 +298,7 @@ parsePeerConnectionParameters() {
   done
   # remove leading space for output
   PEERS="$(echo -e "$PEERS" | sed -e 's/^[[:space:]]*//')"
+  echo $PEER_CONN_PARMS $PEERS
 }
 
 # chaincodeInvoke <peer> <org> ...
