@@ -430,7 +430,7 @@ function generateChannelArtifacts() {
   echo "CONSENSUS_TYPE="$CONSENSUS_TYPE
   set -x
   if [ "$CONSENSUS_TYPE" == "solo" ]; then
-    configtxgen -profile ThreeOrgsOrdererGenesis -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
+    configtxgen -profile SixOrgsOrdererGenesis -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
   elif [ "$CONSENSUS_TYPE" == "kafka" ]; then
     configtxgen -profile SampleDevModeKafka -channelID byfn-sys-channel -outputBlock ./channel-artifacts/genesis.block
   elif [ "$CONSENSUS_TYPE" == "etcdraft" ]; then
@@ -451,7 +451,7 @@ function generateChannelArtifacts() {
   echo "### Generating channel configuration transaction 'channel.tx' ###"
   echo "#################################################################"
   set -x
-  configtxgen -profile ThreeOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+  configtxgen -profile SixOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -464,7 +464,7 @@ function generateChannelArtifacts() {
   echo "#######    Generating anchor peer update for Org1MSP   ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
+  configtxgen -profile SixOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then
@@ -477,7 +477,7 @@ function generateChannelArtifacts() {
   echo "#######    Generating anchor peer update for Org2MSP   ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate \
+  configtxgen -profile SixOrgsChannel -outputAnchorPeersUpdate \
     ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
   res=$?
   set +x
@@ -492,12 +492,55 @@ function generateChannelArtifacts() {
   echo "#######    Generating anchor peer update for Org3MSP   ##########"
   echo "#################################################################"
   set -x
-  configtxgen -profile ThreeOrgsChannel -outputAnchorPeersUpdate \
+  configtxgen -profile SixOrgsChannel -outputAnchorPeersUpdate \
     ./channel-artifacts/Org3MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org3MSP
   res=$?
   set +x
   if [ $res -ne 0 ]; then
     echo "Failed to generate anchor peer update for Org3MSP..."
+    exit 1
+  fi
+
+  echo
+  echo
+  echo "#################################################################"
+  echo "#######    Generating anchor peer update for Org4MSP   ##########"
+  echo "#################################################################"
+  set -x
+  configtxgen -profile SixOrgsChannel -outputAnchorPeersUpdate \
+    ./channel-artifacts/Org4MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org4MSP
+  res=$?
+  set +x
+  if [ $res -ne 0 ]; then
+    echo "Failed to generate anchor peer update for Org4MSP..."
+    exit 1
+  fi
+  echo
+  echo
+  echo "#################################################################"
+  echo "#######    Generating anchor peer update for Org5MSP   ##########"
+  echo "#################################################################"
+  set -x
+  configtxgen -profile SixOrgsChannel -outputAnchorPeersUpdate \
+    ./channel-artifacts/Org5MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org5MSP
+  res=$?
+  set +x
+  if [ $res -ne 0 ]; then
+    echo "Failed to generate anchor peer update for Org5MSP..."
+    exit 1
+  fi
+  echo
+  echo
+  echo "#################################################################"
+  echo "#######    Generating anchor peer update for Org6MSP   ##########"
+  echo "#################################################################"
+  set -x
+  configtxgen -profile SixOrgsChannel -outputAnchorPeersUpdate \
+    ./channel-artifacts/Org6MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org6MSP
+  res=$?
+  set +x
+  if [ $res -ne 0 ]; then
+    echo "Failed to generate anchor peer update for Org6MSP..."
     exit 1
   fi
   echo

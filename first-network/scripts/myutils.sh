@@ -10,6 +10,10 @@ ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrga
 PEER0_ORG1_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 PEER0_ORG2_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 PEER0_ORG3_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
+PEER0_ORG4_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org4.example.com/peers/peer0.org4.example.com/tls/ca.crt
+PEER0_ORG5_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org5.example.com/peers/peer0.org5.example.com/tls/ca.crt
+PEER0_ORG6_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org6.example.com/peers/peer0.org6.example.com/tls/ca.crt
+#add more peer's CA in the near future.
 
 # verify the result of the end-to-end test
 verifyResult() {
@@ -59,6 +63,37 @@ setGlobals() {
     else
       CORE_PEER_ADDRESS=peer1.org3.example.com:12051
     fi
+
+  elif [ $ORG -eq 4 ]; then
+    CORE_PEER_LOCALMSPID="Org4MSP"
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG4_CA
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp
+    if [ $PEER -eq 0 ]; then
+      CORE_PEER_ADDRESS=peer0.org4.example.com:13051
+    else
+      CORE_PEER_ADDRESS=peer1.org4.example.com:14051
+    fi
+
+  elif [ $ORG -eq 5 ]; then
+    CORE_PEER_LOCALMSPID="Org5MSP"
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG5_CA
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp
+    if [ $PEER -eq 0 ]; then
+      CORE_PEER_ADDRESS=peer0.org5.example.com:15051
+    else
+      CORE_PEER_ADDRESS=peer1.org5.example.com:16051
+    fi
+
+  elif [ $ORG -eq 6 ]; then
+    CORE_PEER_LOCALMSPID="Org6MSP"
+    CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG6_CA
+    CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org6.example.com/users/Admin@org6.example.com/msp
+    if [ $PEER -eq 0 ]; then
+      CORE_PEER_ADDRESS=peer0.org6.example.com:17051
+    else
+      CORE_PEER_ADDRESS=peer1.org6.example.com:18051
+    fi
+
   else
     echo "================== ERROR !!! ORG Unknown =================="
   fi
@@ -127,12 +162,13 @@ installChaincode() {
   res=$?
   set +x
   cat log.txt
-  verifyResult $res "Chaincode ${NAME}${NAME}  installation on peer${PEER}.org${ORG} has failed"
+  verifyResult $res "Chaincode ${NAME} installation on peer${PEER}.org${ORG} has failed"
   echo "===================== Chaincode ${NAME} is installed on peer${PEER}.org${ORG} ===================== "
   echo
 }
 
 #chaincode name is the third arg
+#we dont care about non-TLS because we I use TLS.
 instantiateChaincode() {
   PEER=$1
   ORG=$2
@@ -150,7 +186,7 @@ instantiateChaincode() {
     set +x
   else
     set -x
-    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${NAME} -l ${LANGUAGE} -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')" >&log.txt
+    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n ${NAME} -l ${LANGUAGE} -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer','Org4MSP.peer','Org5MSP.peer','Org6MSP.peer')" >&log.txt
     res=$?
     set +x
   fi
@@ -307,6 +343,8 @@ parsePeerConnectionParameters() {
 
 
 #Call this once with chaincode sctwo
+#We dont care about non-TLS.
+#manually change the chaincode name at this func
 chaincodeInvoke() {
   parsePeerConnectionParameters $@
   res=$?
@@ -322,7 +360,7 @@ chaincodeInvoke() {
     set +x
   else
     set -x
-    peer chaincode invoke -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n sctwo $PEER_CONN_PARMS -c '{"Args":["initLedger"]}' >&log.txt
+    peer chaincode invoke -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n scthreediff5 $PEER_CONN_PARMS -c '{"Args":["initLedger"]}' >&log.txt
     res=$?
     set +x
   fi
