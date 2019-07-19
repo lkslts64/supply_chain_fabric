@@ -155,10 +155,10 @@ installChaincode() {
   NAME=$3
   CC_PATH=$4
   setGlobals $PEER $ORG
-  VERSION=${3:-1.0}
+  VERSION=$5
   set -x
   echo $VERSION $NAME $LANGUAGE $SRC_PATH $CC_PATH
-  peer chaincode install -n ${NAME} -v 1.0 -l ${LANGUAGE} -p ${CC_PATH} >&log.txt
+  peer chaincode install -n ${NAME} -v ${VERSION} -l ${LANGUAGE} -p ${CC_PATH} >&log.txt
   res=$?
   set +x
   cat log.txt
@@ -199,10 +199,11 @@ instantiateChaincode() {
 upgradeChaincode() {
   PEER=$1
   ORG=$2
+  VERS=$3
   setGlobals $PEER $ORG
 
   set -x
-  peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 2.0 -c '{"Args":["init","a","90","b","210"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')"
+  peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C mychannel -n scthreediff6 -v $VERS -c '{"Args":["init","a","90","b","210"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
   res=$?
   set +x
   cat log.txt
@@ -229,7 +230,7 @@ chaincodeQuery() {
     sleep $DELAY
     echo "Attempting to Query peer${PEER}.org${ORG} ...$(($(date +%s) - starttime)) secs"
     set -x
-    peer chaincode query -C $CHANNEL_NAME -n ${NAME} -c '{"Args":["queryAsset","1"]}' >&log.txt
+    peer chaincode query -C $CHANNEL_NAME -n ${NAME} -c '{"Args":["queryAsset","Crude1"]}' >&log.txt
     res=$?
     set +x
     test $res -eq 0 && VALUE=$(cat log.txt | awk '/Query Result/ {print $NF}')
@@ -346,7 +347,9 @@ parsePeerConnectionParameters() {
 #We dont care about non-TLS.
 #manually change the chaincode name at this func
 chaincodeInvoke() {
-  parsePeerConnectionParameters $@
+  #parsePeerConnectionParameters $@
+  NAME=$1
+  parsePeerConnectionParameters ${@:2:$#} 
   res=$?
   verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and org parameters "
 
@@ -360,10 +363,27 @@ chaincodeInvoke() {
     set +x
   else
     set -x
-    peer chaincode invoke -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n scthreediff5 $PEER_CONN_PARMS -c '{"Args":["initLedger"]}' >&log.txt
+    peer chaincode invoke -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n $NAME $PEER_CONN_PARMS -c '{"Args":["initLedger"]}' >&log.txt
     res=$?
     set +x
   fi
+  cat log.txt
+  verifyResult $res "Invoke execution on $PEERS failed "
+  echo "===================== Invoke transaction successful on $PEERS on channel '$CHANNEL_NAME' ===================== "
+  echo
+}
+
+chaincodeInvokeDeliverCrude() {
+  #parsePeerConnectionParameters $@
+  NAME=$1
+  parsePeerConnectionParameters ${@:2:$#} 
+  res=$?
+  verifyResult $res "Invoke transaction failed on channel '$CHANNEL_NAME' due to uneven number of peer and org parameters "
+
+  set -x
+  peer chaincode invoke -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n $NAME $PEER_CONN_PARMS -c '{"Args":["deliverCrude","Crude1","0","200","orgDriller","2002-10-02T10:00:00-05:00","orgDriller","org1","342352","2003-10-02T10:00:00-05:00"]}' >&log.txt
+  res=$?
+  set +x
   cat log.txt
   verifyResult $res "Invoke execution on $PEERS failed "
   echo "===================== Invoke transaction successful on $PEERS on channel '$CHANNEL_NAME' ===================== "

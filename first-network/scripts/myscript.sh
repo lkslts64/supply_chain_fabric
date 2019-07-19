@@ -105,7 +105,7 @@ updateAnchorPeers 0 6
 
 #Names of chaincodes to install
 #NAME1=sctwo
-NAME2=scthreediff5
+NAME2=scthreediff6
 ## Install chaincode on peer0.org1 and peer0.org2
 #echo "Installing chaincode ${NAME1} on peer0.org1..."
 #installChaincode 0 1 "$NAME1" "$CC_SRC_PATH"
@@ -114,17 +114,17 @@ NAME2=scthreediff5
 #echo "Install chaincode ${NAME1} on peer0.org3..."
 #installChaincode 0 3 "$NAME1" "$CC_SRC_PATH"
 echo "Install chaincode ${NAME2} on peer0.org1..."
-installChaincode 0 1 "$NAME2" "$CC_SRC_PATH2"
+installChaincode 0 1 "$NAME2" "$CC_SRC_PATH2" 1.0
 echo "Install chaincode ${NAME2} on peer0.org2..."
-installChaincode 0 2 "$NAME2" "$CC_SRC_PATH2"
+installChaincode 0 2 "$NAME2" "$CC_SRC_PATH2" 1.0
 echo "Install chaincode ${NAME2} on peer0.org3..."
-installChaincode 0 3 "$NAME2" "$CC_SRC_PATH2"
+installChaincode 0 3 "$NAME2" "$CC_SRC_PATH2" 1.0
 echo "Install chaincode ${NAME2} on peer0.org4..."
-installChaincode 0 4 "$NAME2" "$CC_SRC_PATH2"
+installChaincode 0 4 "$NAME2" "$CC_SRC_PATH2" 1.0
 echo "Install chaincode ${NAME2} on peer0.org5..."
-installChaincode 0 5 "$NAME2" "$CC_SRC_PATH2"
+installChaincode 0 5 "$NAME2" "$CC_SRC_PATH2" 1.0
 echo "Install chaincode ${NAME2} on peer0.org6..."
-installChaincode 0 6 "$NAME2" "$CC_SRC_PATH2"
+installChaincode 0 6 "$NAME2" "$CC_SRC_PATH2" 1.0
 
 
 # Instantiate chaincode on peer0.org2
@@ -138,7 +138,8 @@ sleep 2
 
 # Invoke chaincode on peer0.org1 and peer0.org2
 echo "Sending invoke transaction on peer0.org1,peer0.org2 and peer0.org3..."
-chaincodeInvoke 0 1 0 2 0 3 0 4 0 5 0 6
+chaincodeInvoke "$NAME2" 0 1 0 2 
+chaincodeInvokeDeliverCrude "$NAME2" 0 1 0 2 
 
 
 # Query chaincode on peer0.org1
