@@ -1,18 +1,6 @@
-package main
-
-import (
-	"bytes"
-	"encoding/json"
-	"errors"
-	"fmt"
-	"github.com/hyperledger/fabric/core/chaincode/shim"
-	sc "github.com/hyperledger/fabric/protos/peer"
-	"strconv"
-	"strings"
-	"time"
-)
-
 /*
+Gas & fuel supply chain management chaincode.
+
 
 org1 -> driller
 org2 -> shipper
@@ -32,15 +20,28 @@ transfer - either crude or fuel
 query asset
 query asset by range
 
+
 */
-// Define the Smart Contract structure
+package main
+
+import (
+	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	"github.com/hyperledger/fabric/core/chaincode/shim"
+	sc "github.com/hyperledger/fabric/protos/peer"
+	"strconv"
+	"strings"
+	"time"
+)
+
 type SmartContract struct {
 }
 
 /*
-Crude Oil ID should be like this: CrudeXXXX where XXXX is an ever increasing number.
+ */
 
-*/
 type Vehicle struct {
 	Type string
 	ID   string
@@ -63,7 +64,8 @@ type AssetDetails struct {
 }
 
 /*
-Put in db wih key in form 'CrudeXXX'
+Put in db with key CrudeID
+Crude ID should be like this: CrudeXXXX where XXXX is an ever increasing number.
 */
 type Crude struct {
 	AD        AssetDetails
@@ -74,7 +76,8 @@ type Crude struct {
 }
 
 /*
-Put in db wih key in form 'FuelXXX'
+Put in db with key FuelID
+Fuel ID should be like this: FuelXXXX where XXXX is an ever increasing number.
 */
 type Fuel struct {
 	AD        AssetDetails
@@ -85,7 +88,8 @@ type Fuel struct {
 }
 
 /*
-Put in db wih key in form 'FuelOrderXXX'
+Put in db with key FuelOrderID
+FuelOrder ID should be like this: FuelOrderXXXX where XXXX is an ever increasing number.
 */
 type FuelOrder struct {
 	AD        AssetDetails
@@ -95,11 +99,6 @@ type FuelOrder struct {
 	Timestamp time.Time
 }
 
-/*type FuelDelivery struct {
-	DD    DeliveryDetails
-	Proof TxProof
-}
-*/
 type FuelOrderID = string
 
 /*
@@ -113,16 +112,18 @@ type FuelDeliveryPlan struct {
 	Plan map[FuelOrderID]DeliveryDetails
 }
 
-/*
-* The Init method *
- */
+type OrgAmount struct {
+	amount float64
+	org    string
+}
+
 func (s *SmartContract) Init(APIstub shim.ChaincodeStubInterface) sc.Response {
 	return shim.Success(nil)
 }
 
 /*
  * The Invoke method *
- called when an application requests to run the Smart Contract "tuna-chaincode"
+ called when an application requests to run any Smart Contract
  The app also specifies the specific smart contract function to call with args
 */
 func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response {
@@ -149,57 +150,6 @@ func (s *SmartContract) Invoke(APIstub shim.ChaincodeStubInterface) sc.Response 
 	}
 
 	return shim.Error("Invalid Smart Contract function name.")
-}
-func HasPrefixOrg(s string) bool {
-	return strings.HasPrefix(s, "org")
-}
-
-func NewAssetDetails(val, quant, own, st string) (AssetDetails, error) {
-	//value can be zero if shipper doesn't want to make it public.
-	value, err := strconv.ParseFloat(val, 64)
-	if err != nil || value < 0 {
-		return AssetDetails{}, errors.New("Value is not a float number")
-	}
-	quantity, err := strconv.ParseInt(quant, 10, 64)
-	if err != nil || quantity < 0 {
-		return AssetDetails{}, errors.New("Quantity is not an int number")
-	}
-	if HasPrefixOrg(own) == false {
-		return AssetDetails{}, errors.New("Owner value is not prefixed with string 'org'")
-	}
-	return AssetDetails{value, int(quantity), own, st}, nil
-}
-func NewDeliveryDetails(est, sloc, dest string) (DeliveryDetails, error) {
-
-	estTime, err := time.Parse(time.RFC3339, est)
-	if err != nil {
-		return DeliveryDetails{}, errors.New("Time is not in RFC3339 format")
-	}
-	if HasPrefixOrg(sloc) == false {
-		return DeliveryDetails{}, errors.New("Starting Location value is not prefixed with 'org'")
-	}
-	if HasPrefixOrg(dest) == false {
-		return DeliveryDetails{}, errors.New("Destination value is not prefixed with 'org'")
-	}
-	return DeliveryDetails{estTime, 0, sloc, dest}, nil
-}
-
-/*
-A dummy proof constructor.
-Hash is the SHA256("ait")
-*/
-func NewProof() TxProof {
-	return TxProof{"www.ait.gr", "7cb0d761a60f4968299cda86c333dafe318fbf87b0979f60befd0499e39e21d6"}
-}
-func NewVehicle(typ, id string) Vehicle {
-	return Vehicle{typ, id}
-}
-func RFCtoTime(rfc string) (time.Time, error) {
-	currtime, err := time.Parse(time.RFC3339, rfc)
-	if err != nil {
-		return time.Time{}, errors.New("Time not provided in RFC3339 format.")
-	}
-	return currtime, nil
 }
 
 /*
@@ -244,6 +194,7 @@ func (s *SmartContract) deliverCrude(stub shim.ChaincodeStubInterface, args []st
 }
 
 /*
+Transform Crude oil into something useful (e.g. Fuel)
 args[0] = fuelID like 'FuelXXXX'
 arg1 = value,arg2 = quantity, arg3 = owner
 arg4 = density,arg5 = type_of_fuel, arg6 = CrudeID (ancestor ID)
@@ -283,6 +234,7 @@ func (s *SmartContract) refine(stub shim.ChaincodeStubInterface, args []string) 
 }
 
 /*
+Refiner adds this when a fueling station asks for an order of fuel.
 arg1-3 = asset_details
 arg4 = dest, arg5 = fuelID
 arg6 = timestamp
@@ -324,6 +276,8 @@ func (s *SmartContract) addFuelOrder(stub shim.ChaincodeStubInterface, args []st
 }
 
 /*
+Make a Fuel Delivery Plan based on existing FuelOrders. A track should deliver fuel to all fueling stations mentioned in the
+Delivery Plan.
 args of this invokation:
 	PlanID
 	TruckID
@@ -348,6 +302,7 @@ func (s *SmartContract) deliverFuel(stub shim.ChaincodeStubInterface, args []str
 	}
 	Plan := make(map[FuelOrderID]DeliveryDetails)
 	//orders[i] = FuelorderID , orders[i+1] = estTime , i+2 = sloc , i+3 = dest
+	//change everys FuelOrder's state to ON_WAY and create a new DeliveryDetail for it.
 	for i := 0; i < len(orders); i += 4 {
 		var id FuelOrderID = orders[i]
 		fuelOrderbytes, _ := stub.GetState(id)
@@ -383,22 +338,6 @@ func (s *SmartContract) deliverFuel(stub shim.ChaincodeStubInterface, args []str
 }
 
 /*
-func transfer(stub shim.ChaincodeStubInterface, Deliverable d, own, stime, id string) error {
-	switch d.(type) {
-	case Crude:
-		crudeAsBytes, _ := stub.GetState(id)
-		if crudeAsBytes == nil {
-			return shim.Error("Could not locate Crude")
-		}
-		json.Unmarshal(crudeAsBytes,&
-		fmt.Println("")
-	case FuelOrder:
-	}
-
-}
-*/
-
-/*
 if we want to transfer FuelOrder then we should supply {FuelOrderID,owner,curtime,PlanID}
 if we want to transfer Crude then we should supply {Crude,owner,curtime}
 
@@ -424,46 +363,38 @@ func (s *SmartContract) transfer(stub shim.ChaincodeStubInterface, args []string
 	case strings.HasPrefix(id, "Crude"):
 		crude := Crude{}
 		json.Unmarshal(assetAsBytes, &crude)
-		if crude.AD.State != "ON_WAY" {
-			return shim.Error("Cannot transfer crude if it's state is not ON_WAY")
-		}
-		crude.AD.State = "DELIVERED"
-		crude.DD.Delay = Timestamp.Sub(crude.DD.EstTime).Seconds()
-		//add transfer of money
-		//TODO:create a new func for this
-		var timePenalty float64
-		timePenalty = crude.DD.Delay / 100.0
-		if timePenalty < 0 {
-			timePenalty = 0
-		}
-		shipperPayment := float64(crude.AD.Quantity)/10.0 - timePenalty
-		drillerPayment := crude.AD.Value
-		org1AccBytes, err := stub.GetState("org1")
-		if err != nil {
-			return shim.Error("Please call initLedger before transfer")
-		}
-		org2AccBytes, err = stub.GetState("org2")
-		if err != nil {
-			return shim.Error("Please call initLedger before transfer")
-		}
-		org3AccBytes, err = stub.GetState("org3")
-		if err != nil {
-			return shim.Error("Please call initLedger before transfer")
-		}
-		var org1Amount, org2Amount, org3Amount float64
-		json.Unmarshal(org1AccBytes, &org1Amount)
-		json.Unmarshal(org2AccBytes, &org2Amount)
-		json.Unmarshal(org3AccBytes, &org3Amount)
-		org1Amount += drillerPayment
-		org2Amount += shipperPayment
-		org3Amount -= shipperPayment + drillerPayment
-		//update db (put state)
-		//....
 
-		//end transfer money
-		crude.AD.Owner = args[1]
+		logger := shim.NewLogger("myloger")
+
+		fmt.Println("OK BEFORE dd transfer")
+		logger.Critical("OK BEFORE dd transfer")
+		timePenalty := crude.DD.transfer(Timestamp)
+		fmt.Println("OK BEFORE ad transfer")
+		logger.Critical("OK BEFORE ad transfer")
+		err := crude.AD.transfer(args[1])
+		fmt.Println("OK AFTER ad transfer")
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
+		//the new owner shall pay shipper based on the quantity he delivered
+		//and driller based on the value of the crude oil.
+		shipperPayment := float64(crude.AD.Quantity)/10.0 - timePenalty
+		if shipperPayment < 0 {
+			shipperPayment = 0
+		}
+		drillerPayment := crude.AD.Value
+		payments := []OrgAmount{{shipperPayment, "org2"}, {drillerPayment, "org1"}}
+		logger.Critical("OK BEFORE PAY")
+		err = Pay(stub, crude.AD, payments)
+		logger.Critical("OK AFTER PAY")
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
 		assetAsBytes, _ = json.Marshal(crude)
-		err := stub.PutState(id, assetAsBytes)
+		err = stub.PutState(id, assetAsBytes)
+		fmt.Println("OK AFTER pputstate")
 		if err != nil {
 			return shim.Error(fmt.Sprintf("Failed to put %s in db", id))
 		}
@@ -471,11 +402,10 @@ func (s *SmartContract) transfer(stub shim.ChaincodeStubInterface, args []string
 	case strings.HasPrefix(id, "FuelOrder"):
 		fuelOrder := FuelOrder{}
 		json.Unmarshal(assetAsBytes, &fuelOrder)
-		fuelOrder.AD.Owner = args[1]
-		if fuelOrder.AD.State != "ON_WAY" {
-			return shim.Error("Cannot deliver fuel if it's state is not ON_WAY")
+		err := fuelOrder.AD.transfer(args[1])
+		if err != nil {
+			return shim.Error(err.Error())
 		}
-		fuelOrder.AD.State = "DELIVERED"
 		if strings.HasPrefix(args[3], "Plan") == false {
 			return shim.Error("PlanID is not of the form 'PlanXXX'")
 		}
@@ -489,13 +419,28 @@ func (s *SmartContract) transfer(stub shim.ChaincodeStubInterface, args []string
 		if ok == false {
 			return shim.Error("FuelOrderID didn't exist in any plan")
 		}
-		dd.Delay = Timestamp.Sub(dd.EstTime).Seconds()
+
+		timePenalty := dd.transfer(Timestamp)
 		dplan.Plan[id] = dd
 		dplanAsBytes, _ = json.Marshal(dplan)
-		err := stub.PutState(args[3], dplanAsBytes)
+		err = stub.PutState(args[3], dplanAsBytes)
 		if err != nil {
 			return shim.Error(fmt.Sprintf("Failed to put %s in db", args[3]))
 		}
+
+		//the new owner shall pay tracker based on the quantity he delivered
+		//and refiner based on the value of the fuel order.
+		trackPayment := float64(fuelOrder.AD.Quantity)/10.0 - timePenalty
+		if trackPayment < 0 {
+			trackPayment = 0
+		}
+		refinerPayment := fuelOrder.AD.Value
+		payments := []OrgAmount{{trackPayment, "org4"}, {refinerPayment, "org3"}}
+		err = Pay(stub, fuelOrder.AD, payments)
+		if err != nil {
+			return shim.Error(err.Error())
+		}
+
 		assetAsBytes, _ = json.Marshal(fuelOrder)
 		err = stub.PutState(id, assetAsBytes)
 		if err != nil {
@@ -605,6 +550,128 @@ func (s *SmartContract) initLedger(stub shim.ChaincodeStubInterface, args []stri
 	return shim.Success(nil)
 }
 
+func HasPrefixOrg(s string) bool {
+	return strings.HasPrefix(s, "org")
+}
+
+func (ad *AssetDetails) transfer(own string) error {
+	if ad.State != "ON_WAY" {
+		return errors.New("Cannot transfer asset if it's state is not ON_WAY")
+	}
+	ad.State = "DELIVERED"
+	ad.Owner = own
+	return nil
+}
+
+func (dd *DeliveryDetails) transfer(tstamp time.Time) float64 {
+	dd.Delay = tstamp.Sub(dd.EstTime).Seconds()
+	timePenalty := dd.Delay / 100.0
+	if timePenalty < 0 {
+		return 0
+	}
+	return timePenalty
+}
+
+//construct a new AssetDetails type based on supplied args
+func NewAssetDetails(val, quant, own, st string) (AssetDetails, error) {
+	//value can be zero if shipper doesn't want to make it public.
+	value, err := strconv.ParseFloat(val, 64)
+	if err != nil || value < 0 {
+		return AssetDetails{}, errors.New("Value is not a float number")
+	}
+	quantity, err := strconv.ParseInt(quant, 10, 64)
+	if err != nil || quantity < 0 {
+		return AssetDetails{}, errors.New("Quantity is not an int number")
+	}
+	if HasPrefixOrg(own) == false {
+		return AssetDetails{}, errors.New("Owner value is not prefixed with string 'org'")
+	}
+	return AssetDetails{value, int(quantity), own, st}, nil
+}
+
+//construct a new DeliveryDetails type based on supplied args
+func NewDeliveryDetails(est, sloc, dest string) (DeliveryDetails, error) {
+
+	estTime, err := time.Parse(time.RFC3339, est)
+	if err != nil {
+		return DeliveryDetails{}, errors.New("Time is not in RFC3339 format")
+	}
+	if HasPrefixOrg(sloc) == false {
+		return DeliveryDetails{}, errors.New("Starting Location value is not prefixed with 'org'")
+	}
+	if HasPrefixOrg(dest) == false {
+		return DeliveryDetails{}, errors.New("Destination value is not prefixed with 'org'")
+	}
+	return DeliveryDetails{estTime, 0, sloc, dest}, nil
+}
+
+/*
+OrgAmount slice contains which orgs the current owner should pay from the asset delivery
+and how much (the amount).Amounts should be always non negative.
+oa[0].org = organization who delivers (e.g. shipper)
+oa[1].org = organization who supplies (e.g. refiner or driller)
+*/
+func Pay(stub shim.ChaincodeStubInterface, ad AssetDetails, oa []OrgAmount) error {
+	//get the current account amounts
+	orgBuyAccBytes, err := stub.GetState(ad.Owner)
+	if err != nil {
+		return errors.New("Please call initLedger before transfer")
+	}
+	orgSell1AccBytes, err := stub.GetState(oa[0].org)
+	if err != nil {
+		return errors.New("Please call initLedger before transfer")
+	}
+	orgSell2AccBytes, err := stub.GetState(oa[1].org)
+	if err != nil {
+		return errors.New("Please call initLedger before transfer")
+	}
+	if oa[0].amount < 0 || oa[1].amount < 0 {
+		return errors.New("Amounts to be paid should be positive")
+	}
+	var orgBuyAmount, orgSell1Amount, orgSell2Amount float64
+	json.Unmarshal(orgBuyAccBytes, &orgBuyAmount)
+	json.Unmarshal(orgSell1AccBytes, &orgSell1Amount)
+	json.Unmarshal(orgSell2AccBytes, &orgSell2Amount)
+	//update the accounts
+	orgBuyAmount -= oa[0].amount + oa[1].amount //buyer should pay both the dristributor and supplier
+	orgSell1Amount += oa[0].amount              //distributor gets paid by buyer
+	orgSell2Amount += oa[1].amount              //supplier gets paid by buyer
+	orgBuyAccBytes, err = json.Marshal(orgBuyAmount)
+	orgSell1AccBytes, err = json.Marshal(orgSell1Amount)
+	orgSell2AccBytes, err = json.Marshal(orgSell2Amount)
+	err = stub.PutState(ad.Owner, orgBuyAccBytes)
+	if err != nil {
+		errors.New(fmt.Sprintf("Failed to add new amount for %s org", ad.Owner))
+	}
+	err = stub.PutState(oa[0].org, orgSell1AccBytes)
+	if err != nil {
+		errors.New(fmt.Sprintf("Failed to add new amount for %s org", oa[0].org))
+	}
+	err = stub.PutState(oa[1].org, orgSell2AccBytes)
+	if err != nil {
+		errors.New(fmt.Sprintf("Failed to add new amount for %s org", oa[1].org))
+	}
+	return nil
+}
+
+/*
+A dummy proof constructor.
+Hash is the SHA256("ait")
+*/
+func NewProof() TxProof {
+	return TxProof{"www.ait.gr", "7cb0d761a60f4968299cda86c333dafe318fbf87b0979f60befd0499e39e21d6"}
+}
+func NewVehicle(typ, id string) Vehicle {
+	return Vehicle{typ, id}
+}
+func RFCtoTime(rfc string) (time.Time, error) {
+	currtime, err := time.Parse(time.RFC3339, rfc)
+	if err != nil {
+		return time.Time{}, errors.New("Time not provided in RFC3339 format.")
+	}
+	return currtime, nil
+}
+
 func main() {
 
 	// Create a new Smart Contract
@@ -613,158 +680,3 @@ func main() {
 		fmt.Printf("Error creating new Smart Contract: %s", err)
 	}
 }
-
-/*
- * The initLedger method *
-func (s *SmartContract) initLedger(APIstub shim.ChaincodeStubInterface) sc.Response {
-
-	tim1, _ := time.Parse(time.RFC3339, "2019-03-27T14:12:47.921Z")
-	tim2, _ := time.Parse(time.RFC3339, "2019-03-27T14:12:47.921Z")
-	tim3, _ := time.Parse(time.RFC3339, "2019-03-27T14:12:47.921Z")
-	asset := []Asset{
-		Asset{Value: "92", Quantity: "200053", Owner: "1504054225", State: "READY_FOR_DISTRIBUTION", Type: "Car", Timestamp: tim1, EstTime: time.Time{}, Delay: 0, StartingLocation: "org2", Destination: "org1", ProofURL: "www.google.com", ProofHash: nil},
-		Asset{Value: "34", Quantity: "204", Owner: "1504054225", State: "READY_FOR_DISTRIBUTION", Type: "Car", Timestamp: tim2, EstTime: time.Time{}, Delay: 0, StartingLocation: "org1", Destination: "org2", ProofURL: "www.google.com", ProofHash: nil},
-		Asset{Value: "57", Quantity: "5", Owner: "1504054225", State: "READY_FOR_DISTRIBUTION", Type: "Car", Timestamp: tim3, EstTime: time.Time{}, Delay: 0, StartingLocation: "org1", Destination: "org2", ProofURL: "www.google.com", ProofHash: nil},
-	}
-
-	i := 0
-	for i < len(asset) {
-		fmt.Println("i is ", i)
-		assetAsBytes, _ := json.Marshal(asset[i])
-		APIstub.PutState(strconv.Itoa(i+1), assetAsBytes)
-		fmt.Println("Added", asset[i])
-		i = i + 1
-	}
-
-	return shim.Success(nil)
-}
-func (s *SmartContract) queryAsset(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	if len(args) != 1 {
-		return shim.Error("Incorrect number of arguments. Expecting 1")
-	}
-
-	assetAsBytes, _ := APIstub.GetState(args[0])
-	if assetAsBytes == nil {
-		return shim.Error("Could not locate asset")
-	}
-	return shim.Success(assetAsBytes)
-}
-
-func (s *SmartContract) deliver(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	if len(args) != 3 {
-		return shim.Error("Incorrect number of arguments. Expecting 3")
-	}
-
-	assetAsBytes, _ := APIstub.GetState(args[0])
-	if assetAsBytes == nil {
-		return shim.Error("Could not locate asset")
-	}
-	asset := Asset{}
-
-	json.Unmarshal(assetAsBytes, &asset)
-	if asset.State != "READY_FOR_DISTRIBUTION" {
-		return shim.Error("delivering without asset state=READY_FOR_DISTRIBUTION ?")
-	}
-	asset.State = "ON_WAY"
-	dur, err := time.ParseDuration(args[1])
-	if err != nil {
-		return shim.Error("Duration format is wrong!")
-	}
-	currTime, err := time.Parse(time.RFC3339, args[2])
-	if err != nil {
-		return shim.Error("Timestamp format is wrong.RFC3339 Required!")
-	}
-	asset.Timestamp = currTime
-	asset.EstTime = currTime.Add(dur)
-
-	assetAsBytes, _ = json.Marshal(asset)
-	err = APIstub.PutState(args[0], assetAsBytes)
-	if err != nil {
-		return shim.Error(fmt.Sprintf("Failed to change asset holder: %s", args[0]))
-	}
-
-	return shim.Success(nil)
-}
-
-func (s *SmartContract) transfer(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	if len(args) != 3 {
-		return shim.Error("Incorrect number of arguments. Expecting 3")
-	}
-
-	assetAsBytes, _ := APIstub.GetState(args[0])
-	if assetAsBytes == nil {
-		return shim.Error("Could not locate asset")
-	}
-	asset := Asset{}
-
-	json.Unmarshal(assetAsBytes, &asset)
-	// Normally check that the specified argument is a valid holder of asset
-	// we are skipping this check for this example
-	asset.Owner = args[1]
-	if asset.State != "ON_WAY" {
-		return shim.Error("Trying to deliver an asset that isn't ON_WAY!")
-	}
-	asset.State = "DELIVERED"
-	//asset.Timestamp = args[2]
-	currTime, err := time.Parse(time.RFC3339, args[2])
-	if err != nil {
-		return shim.Error("Timestamp format is wrong.RFC3339 Required!")
-	}
-	asset.Timestamp = currTime
-	//estTime, _ := time.Parse(time.RFC3339, asset.EstTime)
-	dur := currTime.Sub(asset.EstTime)
-	asset.Delay = dur.Seconds() //strconv.FormatFloat(dur.Seconds(), 'f', 6, 64) //negative delay means that asset was delivered before estimated time.
-
-	assetAsBytes, _ = json.Marshal(asset)
-	err = APIstub.PutState(args[0], assetAsBytes)
-	if err != nil {
-		return shim.Error(fmt.Sprintf("Failed to change asset holder: %s", args[0]))
-	}
-
-	return shim.Success(nil)
-}
-
-func (s *SmartContract) changeDeliveryTime(APIstub shim.ChaincodeStubInterface, args []string) sc.Response {
-
-	if len(args) != 2 {
-		return shim.Error("Incorrect number of arguments. Expecting 2")
-	}
-
-	assetAsBytes, _ := APIstub.GetState(args[0])
-	if assetAsBytes == nil {
-		return shim.Error("Could not locate asset")
-	}
-	asset := Asset{}
-
-	json.Unmarshal(assetAsBytes, &asset)
-	dur, err := time.ParseDuration(args[1])
-	if err != nil {
-		return shim.Error("Duration format is wrong!")
-	}
-	if asset.State != "ON_WAY" {
-		return shim.Error("changeDeliveryTime on asset that isn't ON_WAY")
-	}
-
-	//estTime, _ := time.Parse(time.RFC3339, asset.EstTime)
-	asset.EstTime = asset.EstTime.Add(dur)
-	//prev_delay, _ := strconv.ParseFloat(asset.Delay, 64)
-	//newdelay := prev_delay + dur.Seconds()
-	asset.Delay += dur.Seconds()
-
-	assetAsBytes, _ = json.Marshal(asset)
-	err = APIstub.PutState(args[0], assetAsBytes)
-	if err != nil {
-		return shim.Error(fmt.Sprintf("Failed to change asset holder: %s", args[0]))
-	}
-
-	return shim.Success(nil)
-}
-*/
-/*
- * main function *
-calls the Start function
-The main function starts the chaincode in the container during instantiation.
-*/
