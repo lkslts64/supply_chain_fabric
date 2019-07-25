@@ -125,7 +125,7 @@ installChaincode 0 6 "$NAME2" "$CC_SRC_PATH2" "$VERSION"
 
 
 
-upgradeChaincode 0 1 "$VERSION"
+upgradeChaincodeSimple 0 1 "$VERSION"
 # Instantiate chaincode on peer0.org2
 #echo "Instantiating chaincode on peer0.org2..."
 #instantiateChaincode 0 2 "$NAME2"

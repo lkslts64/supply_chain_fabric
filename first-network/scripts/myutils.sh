@@ -203,7 +203,7 @@ upgradeChaincode() {
   setGlobals $PEER $ORG
 
   set -x
-  peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C mychannel -n scthreediff6 -v $VERS -c '{"Args":["init","a","90","b","210"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer')" >&log.txt
+  peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C mychannel -n scthreediff6 -v $VERS -c '{"Args":["init","a","90","b","210"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer','Org4MSP.peer','Org5MSP.peer','Org6MSP.peer')" >&log.txt
   res=$?
   set +x
   cat log.txt
@@ -211,6 +211,25 @@ upgradeChaincode() {
   echo "===================== Chaincode is upgraded on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
   echo
 }
+
+#Alternative upgrade with non conservative EP
+upgradeChaincodeSimple() {
+  PEER=$1
+  ORG=$2
+  VERS=$3
+  setGlobals $PEER $ORG
+
+  set -x
+  peer chaincode upgrade -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C mychannel -n scthreediff6 -v $VERS -c '{"Args":["init","a","90","b","210"]}' -P "OR ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer','Org4MSP.peer','Org5MSP.peer','Org6MSP.peer')" >&log.txt
+  res=$?
+  set +x
+  cat log.txt
+  verifyResult $res "Chaincode upgrade on peer${PEER}.org${ORG} has failed"
+  echo "===================== Chaincode is upgraded on peer${PEER}.org${ORG} on channel '$CHANNEL_NAME' ===================== "
+  echo
+}
+
+
 #Pass chaincode name
 chaincodeQuery() {
   PEER=$1
