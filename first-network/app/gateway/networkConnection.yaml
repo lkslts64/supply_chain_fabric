@@ -105,7 +105,7 @@ organizations:
       peers: 
         - orderer.example.com
       adminPrivateKey:
-        path: ../../crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/e54772359348a4aea2bc924abc2df5b0cccd9bb322110d82e12c5157560cdf10_sk
+        path: ../../crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/keystore/eb151e3a21603fac72d8d81ef1bd45950193b7306e03b73dec603fcfc30fa886_sk
       signedCert:
         ../../crypto-config/ordererOrganizations/example.com/users/Admin@example.com/msp/signcerts/Admin@example.com-cert.pem
   Org1:
@@ -113,8 +113,9 @@ organizations:
 
     peers:
       - peer0.org1.example.com
+      - peer1.org1.example.com
     adminPrivateKey:
-        path: ../../crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/1897dc6ff381191ff659665b0ccd819e826cdb7c7c95f3999db293fa3543eb68_sk
+        path: ../../crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/ba2caac2ba72b9fd9b047fc51fbf82a76acbe56facbca24fa1af77c1cbcbb5cc_sk
     signedCert:
         path: ../../crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
     # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
@@ -127,8 +128,9 @@ organizations:
 
     peers:
       - peer0.org2.example.com
+      - peer1.org2.example.com
     adminPrivateKey:
-        path: ../../crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/894a5878e6b411d40a072e9e678999443a079eaffe48f83f95ecbbc5567950cd_sk
+        path: ../../crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/9a06770193bd2bb70b543ec2951e3f5a013049670ed10f400dbd81f421ba02e5_sk
     signedCert:
         path: ../../crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/Admin@org2.example.com-cert.pem
 
@@ -137,8 +139,9 @@ organizations:
 
     peers:
       - peer0.org3.example.com
+      - peer1.org3.example.com
     adminPrivateKey:
-        path: ../../crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/keystore/de331b8d9adadaf6daed2af13b5ce722232d5499f6090cb4674f097787b20def_sk
+        path: ../../crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/keystore/ff1e795eb41e2a34c9f32869c3370fc811a9a3673be97d889f07c9f81a4e8c30_sk
     signedCert:
         path: ../../crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/signcerts/Admin@org3.example.com-cert.pem
   Org4:
@@ -146,8 +149,9 @@ organizations:
 
     peers:
       - peer0.org4.example.com
+      - peer1.org4.example.com
     adminPrivateKey:
-        path: ../../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/812bec9e33c1dd6daf1b43ce2152b81d14b19427eb1e89c41881550bc256be21_sk
+        path: ../../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/keystore/e41d46070ce4e21bf9cc0227a2fda5b2850653807025e40093d00bd7319e514a_sk
     signedCert:
         path: ../../crypto-config/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp/signcerts/Admin@org4.example.com-cert.pem
   Org5:
@@ -155,8 +159,9 @@ organizations:
 
     peers:
       - peer0.org5.example.com
+      - peer1.org5.example.com
     adminPrivateKey:
-        path: ../../crypto-config/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp/keystore/0c03582b40932ab39521f3ab90dd56fb1bc14cea49e89ee8a20d82399e640116_sk
+        path: ../../crypto-config/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp/keystore/c42a7fdd6959464a9c095d06d4404c110e84821e6ff2289f23039b9ac3acd70a_sk
     signedCert:
         path: ../../crypto-config/peerOrganizations/org5.example.com/users/Admin@org5.example.com/msp/signcerts/Admin@org5.example.com-cert.pem
   Org6:
@@ -164,8 +169,9 @@ organizations:
 
     peers:
       - peer0.org6.example.com
+      - peer1.org6.example.com
     adminPrivateKey:
-        path: ../../crypto-config/peerOrganizations/org6.example.com/users/Admin@org6.example.com/msp/keystore/236b8eedb1a9172b57a4da809ea27154779e15eb5e926fd125b545d7a1a21f9f_sk
+        path: ../../crypto-config/peerOrganizations/org6.example.com/users/Admin@org6.example.com/msp/keystore/f65f39c252877a2753f70e2fac21ad213c50c7b4cce5ff1e10ff9c01cf7dff57_sk
     signedCert:
         path: ../../crypto-config/peerOrganizations/org6.example.com/users/Admin@org6.example.com/msp/signcerts/Admin@org6.example.com-cert.pem
 #
