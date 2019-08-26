@@ -1,1 +1,1 @@
-[{"Key":"Crude1", "Record":{"AD":{"Value":86,"Quantity":26,"Owner":"org5/6","State":"DELIVERED"},"DD":{"EstTime":"2019-08-01T14:14:27.465Z","Delay":-86.175,"StartingLocation":"org1","Destination":"org3"},"Proof":{"URL":"www.ait.gr","Hash":"7cb0d761a60f4968299cda86c333dafe318fbf87b0979f60befd0499e39e21d6"},"Veh":{"Type":"Vessel","ID":"89"},"Timestamp":"2019-08-01T14:13:01.29Z"}}]
+[]

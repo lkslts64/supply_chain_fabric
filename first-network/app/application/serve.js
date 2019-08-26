@@ -119,6 +119,7 @@ async function main() {
 
   }
 }
+
 async function queryByRange(contract,type) {
 	console.log(type)
 	if (type != 'Plan' && type != 'Fuel' && type != 'FuelOrder' && type != 'Crude' && type != 'org') {
@@ -163,7 +164,7 @@ function queryByRange2(contract,type) {
 	}
 }
 async function queryHistory(contract,asset_id) {
-	let reg = /(Plan|Fuel|Crude|FuelOrder)[0-9]+/;
+	let reg = /(Plan|Fuel|Crude|FuelOrder|org)[0-9]+/;
 	let ind = asset_id.search(reg);
 	if (ind < 0) {
 		console.log('wrong asset_id in queryHistory');
@@ -262,10 +263,8 @@ function transferFuel(contract,fuelOrder_num,plan_num) {
 	return contract.submitTransaction('transfer','FuelOrder'+fuelOrder_num,'org5/6',(new Date()).toISOString(),'Plan'+plan_num)
 }
 function transferCrude(contract,crude_num) {
-	return contract.submitTransaction('transfer','Crude'+crude_num,'org5/6',(new Date()).toISOString())
+	return contract.submitTransaction('transfer','Crude'+crude_num,'org3',(new Date()).toISOString())
 }
-
-
 /* a client can make GET request to this server with URLs:
  /Plan , /Fuel, /FuelOrder , /Crude . These commands show all assets that exist e.g Crude1 , Crude2 ... CrudeN 
  /PlanID , /FuelID, /FuelOrderID , /CrudeID . Here ID is a number. These commands show the details of the specific asset e.g. Crude1 , Crude2413 , Plan2312

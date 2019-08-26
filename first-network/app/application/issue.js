@@ -102,6 +102,37 @@ async function main() {
 		});
     console.log(`Block: ${block}`);
 	});
+	//if user has supplied args then we assume he wants to make a single tx.
+	  //if not, then we multiple txs will be made (see the loop below).
+	  var args = process.argv.slice(2);
+	  if (args.length >= 2) {
+		  let resp;
+		  console.log(args);
+		  switch (args[0]) {
+			  case 'deliverCrude':
+				resp = await deliverCrudeRand(contract,args[1]);
+				break;
+			  case 'transferCrude':
+				resp = await transferCrude(contract,args[1]);
+				break;
+			  case 'refineRand':
+				resp = await refineRand(contract,args[1],args[1]);
+				break;
+			  case 'addFuelOrderRand':
+				resp = await addFuelOrderRand(contract,args[1],args[2]);
+				break;
+			  case 'deliverFuelRand':
+				resp = await deliverFuelRand(contract,args[1],args.slice(2));
+				break;
+			  case 'transferFuel':
+				resp = await transferFuel(contract,args[1],args[2]);
+				break;
+			  default:
+				  console.log('Command line args are not good! Usage: node issue.js <transaction> <arg0> <arg1> ... <argN> ');
+		  }
+		  gateway.disconnect();
+		  return;
+	  }
 
 	let init_id = 0;
 	let i;
@@ -109,7 +140,7 @@ async function main() {
     let resp;
 	  //submit transactions .
 	  //create Crude oil ->transfer -> refine -> create fuelOrder(s) -> deliver orders -> transfer fuel to retailers.
-	for (i = 2;i < 5; i++) {
+	for (i = 17;i < 19; i++) {
 		resp = await deliverCrudeRand(contract,i);
 		console.log(resp);
 	
@@ -263,8 +294,8 @@ function addFuelOrderRand(contract,fuelOrder_num,fuel_num) {
 	let value = Math.floor(Math.random()*101) +1;
 	let quant = Math.floor(Math.random()*101) +1;
 	let owner = 'org3';
-	let rcoin = Math.floor(Math.random()*2);
 	let dest;
+	let rcoin = Math.floor(Math.random()*2);
 	if (rcoin == 0) 
 		dest = 'org5';
 	else if (rcoin == 1) 
@@ -274,9 +305,13 @@ function addFuelOrderRand(contract,fuelOrder_num,fuel_num) {
 
 function deliverFuelRand(contract,plan_num,fuelOrders) {
 	let trackid = Math.floor(Math.random()*10001) +1;
-	let i,dest,rcoin,startLoc,time,estTime,dur;
+	let i,dest,startLoc,time,estTime,dur;
 	startLoc = 'org3';
-	dest = 'org5/6';
+	let rcoin = Math.floor(Math.random()*2);
+	if (rcoin == 0) 
+		dest = 'org5';
+	else if (rcoin == 1) 
+		dest = 'org6';
 	let args_arr = ['deliverFuel','Plan'+plan_num,trackid.toString()]
 	for (i = 0; i < fuelOrders.length; i++) {
 		dur = Math.floor(Math.random()*101) +1;
@@ -289,10 +324,16 @@ function deliverFuelRand(contract,plan_num,fuelOrders) {
 }
 
 function transferFuel(contract,fuelOrder_num,plan_num) {
-	return contract.submitTransaction('transfer','FuelOrder'+fuelOrder_num,'org5/6',(new Date()).toISOString(),'Plan'+plan_num)
+	let rcoin = Math.floor(Math.random()*2);
+	let dest;
+	if (rcoin == 0) 
+		dest = 'org5';
+	else if (rcoin == 1) 
+		dest = 'org6';
+	return contract.submitTransaction('transfer','FuelOrder'+fuelOrder_num,dest,(new Date()).toISOString(),'Plan'+plan_num)
 }
 function transferCrude(contract,crude_num) {
-	return contract.submitTransaction('transfer','Crude'+crude_num,'org5/6',(new Date()).toISOString())
+	return contract.submitTransaction('transfer','Crude'+crude_num,'org3',(new Date()).toISOString())
 }
 
 main().then(() => {
