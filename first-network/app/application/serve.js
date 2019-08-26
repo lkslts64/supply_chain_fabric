@@ -103,38 +103,8 @@ async function main() {
     console.log(`Block: ${block}`);
 	});
 
-	let init_id = 0;
-	let i;
-	let forder_count = 1;
-    let resp;
-	  //submit transactions .
-	  //create Crude oil ->transfer -> refine -> create fuelOrder(s) -> deliver orders -> transfer fuel to retailers.
-	for (i = 2;i < 5; i++) {
-		resp = await deliverCrudeRand(contract,i);
-		console.log(resp);
-	
-		resp = await transferCrude(contract,i)
-		console.log(resp);
-		//let sleep = ms => new Promise(resolve => setTimeout(resolve, 10));
-		resp = await refineRand(contract,i,i);
-		console.log(resp);
-		resp = await addFuelOrderRand(contract,forder_count++,i);
-		console.log(resp);
-		
-		resp = await addFuelOrderRand(contract,forder_count++,i);
-		console.log(resp);
-		resp = await addFuelOrderRand(contract,forder_count++,i);
-		console.log(resp);
-		let forders = [forder_count-3,forder_count-2,forder_count-1]
-		console.log(resp);
-		resp = await deliverFuelRand(contract,i,forders);
-		console.log(resp);
-		resp = await transferFuel(contract,forders[0],i)
-		console.log(resp);
-		//resp = await transferFuel(contract,forders[1],i)
-		console.log(resp);
-		//resp = await queryAsset(contract,'Crude1');
-	}
+	//start server
+	serve(gateway,contract);
 
   } catch (error) {
 
@@ -145,13 +115,13 @@ async function main() {
 
     // Disconnect from the gateway
     console.log('Disconnect from Fabric gateway.')
-    gateway.disconnect();
+    //gateway.disconnect();
 
   }
 }
 async function queryByRange(contract,type) {
 	console.log(type)
-	if (type != 'Plan' && type != 'Fuel' && type != 'FuelOrder' && type != 'Crude') {
+	if (type != 'Plan' && type != 'Fuel' && type != 'FuelOrder' && type != 'Crude' && type != 'org') {
 		console.log('wrong type in queryByRange');
 		return 'wrong type in queryByRange';
 	}
@@ -212,7 +182,7 @@ async function queryHistory(contract,asset_id) {
 
 
 async function queryAsset(contract,asset_id) {
-	let reg = /(Plan|Fuel|Crude|FuelOrder)[0-9]+/;
+	let reg = /(Plan|Fuel|Crude|FuelOrder|org)[0-9]+/;
 	let ind = asset_id.search(reg);
 	if (ind < 0) {
 		console.log('wrong asset_id in queryAsset');
@@ -293,6 +263,100 @@ function transferFuel(contract,fuelOrder_num,plan_num) {
 }
 function transferCrude(contract,crude_num) {
 	return contract.submitTransaction('transfer','Crude'+crude_num,'org5/6',(new Date()).toISOString())
+}
+
+
+/* a client can make GET request to this server with URLs:
+ /Plan , /Fuel, /FuelOrder , /Crude . These commands show all assets that exist e.g Crude1 , Crude2 ... CrudeN 
+ /PlanID , /FuelID, /FuelOrderID , /CrudeID . Here ID is a number. These commands show the details of the specific asset e.g. Crude1 , Crude2413 , Plan2312
+ /blocks . showing the last commited block.
+ /history/AssetID . showing the history of changes in db of this asset (currently not available).
+ /org1 /org2 /org3 ... to see the account balance of these orgs.
+
+ */
+async function serve(gateway,contract) {
+	http.createServer(async function (req, res) {
+	  res.writeHead(200, {'Content-Type': 'application/json'});
+		let q = url.parse(req.url);
+	  //let filename = '.' + q.pathname;
+		console.log(q.pathname);
+	  if (q.pathname == '/') {
+		  res.writeHead(200, {'Content-Type': 'text/html'});
+		  res.write('Welcome to Hyperledger monitoring website!\nDownload the /Crude , /Fuel & /Plan files which are located under the root web server dir.\n')
+		  //let data = fs.readFileSync('blocks','utf-8');
+		  //res.write('\n'+data);
+		  return res.end();
+	  }
+	  let regex = /[0-9]+$/;
+		/*
+		res.writeHead(404, {'Content-Type': 'application/json'});
+		res.write('Too many pathnames!');
+		return res.end("404 Not Found");
+		*/
+		let transforms;
+		//fix this!
+		if (q.pathname.match('/history')) {
+			let ret = await queryHistory(contract,q.pathname.slice(9)).catch ((e) => {
+			  console.log('err?');
+			  console.log(e);
+			});
+			  /*let obj = JSON.parse(ret);
+			console.log(obj);
+			*/
+			  let obj = JSON.parse(ret);
+			  console.log(obj);
+			  //console.log(ret.toJSON());
+			  res.write(JSON.stringify(obj,null,'\t'));
+			  return res.end();
+		}
+		if (q.pathname.match('/blocks')) {
+			let data = fs.readFileSync('blocks','utf-8');
+			return res.end(data);
+		}
+	  let ind = q.pathname.search(regex);
+	  let qres;
+	  if (ind < 0 ) {
+		  res.writeHead(200, {'Content-Type': 'application/json'});
+		  let ret = await queryByRange(contract,q.pathname.slice(1)).catch ((e) => {
+			  console.log(e);
+			  res.write('Could not locate asset');
+			  return res.end();
+			});
+		  let obj = JSON.parse(ret);
+		  console.log(obj);
+		  //console.log(ret.toJSON());
+		  res.write(JSON.stringify(obj,null,'\t'));
+		  return res.end();
+	  }
+	  res.writeHead(200, {'Content-Type': 'application/json'});
+		let ret2 = await queryAsset(contract,q.pathname.slice(1)).catch ((e) => {
+			  console.log(e);
+			  res.write('Could not locate asset');
+			  return res.end();
+			});
+		//transforms = {'<>':'span','text': ' Value : ${AD.Value} \n Quantity: ${AD.Quantity} \n Owner: ${AD.Owner} \n State: ${AD.State} \n EstTime:  ${DD.EstTime} \n Delay: ${DD.Delay} \n StartingLocation: ${DD.StartingLocation} \n Destination:  ${DD.Destination} \n URL: ${Proof.URL} \n Hash: ${Proof.Hash} \n Type: ${Veh.Type}  \n ID: ${Veh.ID} \n Timestamp: ${Timestamp}'}
+			//'DD':{'<>':'li','text':'${DD.EstTime} ${DD.Delay} ${DD.StartingLocation} ${DD.Destination}'},
+			//'Proof':{'<>':'li','text':'${Proof.URL} ${Proof.Hash}'},
+		//let transforms2 = {
+		  let obj2 = JSON.parse(ret2);
+			console.log(obj2);
+		//let html = json2html.transform(obj2,transforms);
+	  res.write(JSON.stringify(obj2,null,'\t'));
+	  return res.end();
+	 /*
+	  fs.readFile(filename, function(err, data) {
+		  if (err) {
+			res.writeHead(404, {'Content-Type': 'application/json'});
+			return res.end("404 Not Found");
+		  }  
+		  res.writeHead(200, {'Content-Type': 'application/json'});
+		  res.write(data);
+		  return res.end();
+	  });
+		*/
+	  //var txt = q.year + " " + q.month;
+	}).listen(8080);
+	console.log('disconect');
 }
 
 main().then(() => {

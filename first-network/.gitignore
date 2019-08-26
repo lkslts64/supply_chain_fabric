@@ -7,3 +7,9 @@
 /channel-artifacts/*.json
 /org3-artifacts/crypto-config/*
 /app/application/node_modules/*
+/app/application/Crudes
+/app/application/blocks
+/app/application/Fuels
+/app/application/FuelOrders
+/app/application/Plans
+/go-app/*
