@@ -11,7 +11,7 @@ In order to build the network (Debian platforms) :
 1) clone this repo under fabric samples directory
 2) copy chaincode directory under fabric-samples/chaincode/ 
 3) navigate under first-network directory
-4) ./byfn up
+4) ./byfn up (may throw error(s) but propably there are some workarounds).
 5) docker exec -it cli bash 
 6) cd scripts && ./upgrade.sh 8.0 
 
