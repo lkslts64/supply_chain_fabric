@@ -1,3 +1,4 @@
+
 								
 
 
@@ -18,18 +19,19 @@ and gas. A typical chain in the fuel-gas industry looks like this:
 	Oil-Pumper -> Crude oil Transporter -> Refiner -> Fuel & Gas Trasporter -> Retailer (fuel stations).
 
 	So, as we can see, there are at least 5 organizations involved, each of them having a completely seperate role in
-the supply chain. The Oil Pumper pumps huge amounts of crude oil from the ground and get's paid by the Refiner, 
-whose role is to refine the crude oil and store it. The trasportation of the crude is made by the Crude oil Transporter via tankers. When crude is refined, it's time to be send to the Retailers (fuel stations). This is done with the
-help of the Fuel & Gas Transporter via trucks. For every route,each truck has a Delivery Plan that specifies which 
+the supply chain. The Oil Pumper pumps huge amounts of crude oil from the ground and gets paid by the Refiner, 
+whose role is to refine the crude oil and store it.
+ The trasportation of the crude is made by the Crude oil Transporter via tankers. When crude is refined, it's time to be send to the Retailers (fuel stations).
+ This is done with the help of the Fuel & Gas Transporter via trucks. For every route,each truck has a Delivery Plan that specifies which 
 Retailers should be visited in order to receive their orders. 
 
 Implementation
 ~~~~~~~~~~~~~~
 
 	In order to implement the above scenario, we used Hyperledger Fabric v1.4. All transactions take place in a single
-channel which consists of 6 Organizations and each organization has 2 peers. The role of each organization is the
-same as described  above except that there is an extra one (at the above example there were 5 in total) which acts as a 
-second Retailer, so we have two fuel stations organizations. Because all data in the blockchain 
+channel consisting of 6 Organizations and each organization has 2 peers. The role of each organization is the
+same as described above but here we have added an extra organization (at the above example there were 5 in total) which acts as a 
+second Retailer, so we have two fuel stations. Because all data in the blockchain 
 are public,ideally one could create multiple channels (or use Fabric's Private Data feature) to 
 retain privacy and confidentiality, but this project lacks this feature. 
 
@@ -98,15 +100,15 @@ into the functionality of the chaincode.
 DELIVERED,REFINED) and some other essential fields like Value etc.
 	- Delivery Details: Contains the starting point of the asset's route and its destination. 
 Also, it contains the Estimated Delivery Time (EstTime) . This is the approximate time that the Transporter 
-believes he can deliver the asset. The Delay field is how much the delivery of the asset was delayed relatively  
+believes he can deliver the asset. The Delay field is how much the delivery of the asset was actually delayed relatively  
 to the EstTime field. If Delay is negative, this means that the Transporter delivered the asset before the EstTime.
 	- TxProof : A realistic application would need to couple the transaction data with some 'real' data. What I mean
 by real is for example, the original documents which were signed by two or more orgs in order to make an order for 
 e.g. crude oil. So, this struct cointains the URL of an original document and its Hash in order to ensure its 
 integrity. This is a proof-of-concept project so no 'real' documents were created nor signed by anyone. For every
-asset, this struct contains the same dummy URL and Hash fields which is "www.ait.gr" and "7cb0d761a60f4968299cda86c333dafe318fbf87b0979f60befd0499e39e21d6" (the SHA-256 hash of 'www.ait.gr')  respectively. 
+asset, this struct contains the same dummy URL and Hash fields which is "www.ait.gr" and "7cb0d761a60f4968299cda86c333dafe318fbf87b0979f60befd0499e39e21d6" (the SHA-256 Hash of 'www.ait.gr')  respectively. 
 	- FuelDeliveryPlan: A delivery plan from the refinary towards the gas stations.
-Contains the vehicle that will deliver the fuelOrders  at many fueling stations. Each fuel order has some 
+Contains the vehicle that will deliver the fuelOrders  at many fueling stations. Each fuelOrder has some 
 delivery details and when the order is eventually delivered, the state of the order will become 'DELIVERED'.
 
 	Chaincode API
@@ -123,8 +125,8 @@ into some other useful products (e.g. fuel , gas).
 	- addFuelOrder : When a Retailer makes an order for fuel from the Refiner, this method should be called. By the
 end of this invokation, a new fuelOrder will be created and stored at the blockchain.
 	- deliverFuel : When this function is called, a new Delivery Plan is made. The caller specifies which 
-fuelOrders will be delivered and the Plan is made based on these orders. There is no limit to how many orders can 
-a Delivery Plan hold.
+fuelOrders will be delivered and the Plan is made based on these orders. There is no limit to how many orders 
+a Delivery Plan can hold.
 	- transfer : This method should be called when an asset is going to change ownership. For example, if the 
 Oil-Pumper sells crude oil to Refiner then after the delivery, a transfer transaction should be submited on the 
 blockchain. When calling this method, all payments associated with the transfer of the asset will take place.
@@ -135,6 +137,7 @@ and value of the asset they sold and buyers will pay both the transporter and th
 	- queryAssetByRange : API for quering a range of assets of the same type (e.g. Crude1-999, Plan1-999).
 	- queryHistoryForKey : API for quering a single asset for its complete update history in the database (maybe 
 there are some bugs at this method).
+
 
 
 Transact with the network
@@ -155,12 +158,10 @@ Here's what ours looks like:
 
 The Connection Profile has the information needed for the SDK to establish a connection between the peers of the 
 network. 
-
 	Because Fabric uses CAs (Certificate Authorities) to authenticate every action on the network,a client should 
 also be equipped with some crypto material. For this purpose, a wallet should be made.
-A script has been developed to create a wallet and it is available at first-network/app/application/addToWallet.js .
+A script has been developed to create a wallet and it is available under first-network/app/application/addToWallet.js .
 (anyone can run the script with this command : node addToWallet.js)
-
 
 	Update the ledger
 	~~~~~~~~~~~~~~~~~
@@ -185,12 +186,12 @@ would like to invoke. We can run this script like this:
 
 method_name can be any of the Chaincode API methods (see above) except the last three, so we can only update the 
 ledger with issue.js. These are the available method_names and the args one should give after:
-	- deliverCrude : needs one more arg that is the ID of the crude that will be created . Example :
+	- deliverCrude : needs one more arg that is the ID of the Crude that will be created . Example :
 $ node issue.js deliverCrude 9842 
-	- transferCrude : needs one more arg that is the ID of the crude that will be transfered . Example :
+	- transferCrude : needs one more arg that is the ID of the Crude that will be transfered . Example :
 $ node issue.js transferCrude 4324 
-	- refineRand : needs two more args that is the ID of the crude that will be transformed to fuel and
-the ID of the newly created fuel (the crude ID should pre-exist in the database).
+	- refineRand : needs two more args that is the ID of the Crude that will be transformed to fuel and
+the ID of the newly created fuel (the Crude ID should pre-exist in the database).
  Example : $ node issue.js refineRand 342 98
 	- addFuelOrderRand : needs two more args that is the ID of the refined fuel that the order originated and the ID
 of the newly created fuel order(the fuel ID should pre-exist in the database ).Example : $ node issue.js addFuelOrderRand 321 908
@@ -202,7 +203,7 @@ Example : $ node issue.js transferFuel 5423 6546.
  
 Alternatively, we can run issue.js without any args ($ node issue.js) if we want to invoke all previous methods
 N times (N is random). 
-If someone looks at the chaincode API, he/she will notice that in order to create/deliver/transfer an asset, more
+If someone looks at the chaincode file, he/she will notice that in order to create/deliver/transfer an asset, more
 arguments should be supplied on top of IDs. Hence, a reasonable question will be : Where the issue.js script finds
 all the extra arguments that are needed? The answer is that it generates them randomly. That's why some method_names
 have a Rand suffix.

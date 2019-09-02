@@ -140,7 +140,7 @@ async function main() {
     let resp;
 	  //submit transactions .
 	  //create Crude oil ->transfer -> refine -> create fuelOrder(s) -> deliver orders -> transfer fuel to retailers.
-	for (i = 17;i < 19; i++) {
+	for (i = 1;i < 3; i++) {
 		resp = await deliverCrudeRand(contract,i);
 		console.log(resp);
 	

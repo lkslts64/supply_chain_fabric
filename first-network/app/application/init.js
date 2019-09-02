@@ -53,12 +53,9 @@ async function main() {
   try {
 
     // Specify userName for network access
-    // const userName = 'isabella.issuer@magnetocorp.com';
-	  //
     const userName = 'Admin@org1.example.com';
 
     // Load connection profile; will be used to locate a gateway
-	  //
     let connectionProfile = yaml.safeLoad(fs.readFileSync('../gateway/networkConnection.yaml', 'utf8'));
 	  //
     //let client = Client.loadFromConfig('../gateway/networkConnection.yaml')
@@ -75,18 +72,15 @@ async function main() {
 
     await gateway.connect(connectionProfile, connectionOptions);
 
-    // Access PaperNet network
     console.log('Use network channel: mychannel.');
 
     const network = await gateway.getNetwork('mychannel');
 
-    // Get addressability to commercial paper contract
-    console.log('Use org.papernet.commercialpaper smart contract.');
+    console.log('Use scthreediff6 smart contract.');
 
     const contract = await network.getContract('scthreediff6');
 
-    // issue commercial paper
-    console.log('Submit commercial paper issue transaction.');
+    console.log('Submit initLedger transaction.');
 	let resp = await contract.submitTransaction('initLedger');
     console.log(resp)
 
