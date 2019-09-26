@@ -1,29 +1,18 @@
-/*
-SPDX-License-Identifier: Apache-2.0
-*/
 
 /*
  * This application has 6 basic steps:
  * 1. Select an identity from a wallet
  * 2. Connect to network gateway
- * 3. Access PaperNet network
- * 4. Construct request to issue commercial paper
- * 5. Submit transaction
- * 6. Process response
- */
-
-/*
- * TODO: create a web server and a client can query Asset by ID or Byrange. How many blocks are produced until now. 
- *
- *
- *
- *
+ * 3. Access supply chain network
+ * 4. Submit transaction
+ * 5. Process response
  */
 
 'use strict';
 
 // Bring key classes into scope, most importantly Fabric SDK network class
 const json2html = require('node-json2html');
+const querystring = require('querystring');
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
@@ -74,17 +63,14 @@ async function main() {
 
     await gateway.connect(connectionProfile, connectionOptions);
 
-    // Access PaperNet network
     console.log('Use network channel: mychannel.');
 
     const network = await gateway.getNetwork('mychannel');
 
-    // Get addressability to commercial paper contract
     console.log('Use org.papernet.commercialpaper smart contract.');
 
     const contract = await network.getContract('scthreediff6');
 
-    // issue commercial paper
     console.log('Submit commercial paper issue transaction.');
 
     const listener = await network.addBlockListener('my-block-listener', (error, block) => {
@@ -92,9 +78,6 @@ async function main() {
         console.error(error);
         return;
     }
-	//console.log(Object.getOwnPropertyNames(block.data.data[0].payload.data.actions[0].payload.action.proposal_response_payload.extension.events.payload));//action.proposal_response_payload.extension.response.payload);
-	//console.log((block.data.data[0].payload.data.actions[0].payload.action.proposal_response_payload.extension.events.tx_id));//action.proposal_response_payload.extension.response.payload);
-	//console.log((block.data.data[0].payload.data.actions[0].payload.action.proposal_response_payload.extension.events.event_name));//action.proposal_response_payload.extension.response.payload);
 		let data =  '\nblock_number: ' + block.header.number+', block_data_hash: '+block.header.data_hash+ ',block_previous_hash: ' +block.header.previous_hash + '\n';
 		fs.writeFile('blocks',data,(err)=> {
 		  if (err) console.log(err);
@@ -277,21 +260,57 @@ async function serve(gateway,contract) {
 	http.createServer(async function (req, res) {
 	  res.writeHead(200, {'Content-Type': 'application/json'});
 		let q = url.parse(req.url);
-	  //let filename = '.' + q.pathname;
 		console.log(q.pathname);
 	  if (q.pathname == '/') {
 		  res.writeHead(200, {'Content-Type': 'text/html'});
 		  res.write('Welcome to Hyperledger monitoring website!\nDownload the /Crude , /Fuel & /Plan files which are located under the root web server dir.\n')
-		  //let data = fs.readFileSync('blocks','utf-8');
-		  //res.write('\n'+data);
 		  return res.end();
 	  }
+		else if (q.pathname.match('/update')) {
+			res.writeHead(200, {'Content-Type': 'application/json'});
+			console.log(q.query);
+			let params = querystring.parse(q.query);
+			console.log(params['m']);
+			console.log(params);
+			let resp;
+			switch (params['m']) {
+				case 'deliverCrude':
+                  resp = await deliverCrudeRand(contract,params['id']).catch ((e) => {
+				  console.log(e);
+			      });
+                  break;
+                case 'transferCrude':
+                  resp = await transferCrude(contract,params['id']).catch ((e) => {
+				  console.log(e);
+			      });
+                  break;
+                case 'refineRand':
+                  resp = await refineRand(contract,params['id'],params['id']).catch ((e) => {
+				  console.log(e);
+			      });
+                  break;
+                case 'addFuelOrderRand':
+                  resp = await addFuelOrderRand(contract,params['id'],params['id2']).catch ((e) => {
+				  console.log(e);
+			      });
+                  break;
+                case 'deliverFuelRand':
+                  /*resp = await deliverFuelRand(contract,params['id'],params.slice(2,params.length)).catch ((e) => {
+				  console.log(e);
+			      });*/
+                  break;
+                case 'transferFuel':
+                  resp = await transferFuel(contract,params['id'],params['id2']).catch ((e) => {
+				  console.log(e);
+			      });
+                  break;
+                default:
+					res.write('Thats not a valid update option.Please try again.');
+					return res.end();
+			}
+		  return res.end('Update was successful');
+		}
 	  let regex = /[0-9]+$/;
-		/*
-		res.writeHead(404, {'Content-Type': 'application/json'});
-		res.write('Too many pathnames!');
-		return res.end("404 Not Found");
-		*/
 		let transforms;
 		//fix this!
 		if (q.pathname.match('/history')) {
@@ -299,12 +318,8 @@ async function serve(gateway,contract) {
 			  console.log('err?');
 			  console.log(e);
 			});
-			  /*let obj = JSON.parse(ret);
-			console.log(obj);
-			*/
 			  let obj = JSON.parse(ret);
 			  console.log(obj);
-			  //console.log(ret.toJSON());
 			  res.write(JSON.stringify(obj,null,'\t'));
 			  return res.end();
 		}
@@ -333,27 +348,10 @@ async function serve(gateway,contract) {
 			  res.write('Could not locate asset');
 			  return res.end();
 			});
-		//transforms = {'<>':'span','text': ' Value : ${AD.Value} \n Quantity: ${AD.Quantity} \n Owner: ${AD.Owner} \n State: ${AD.State} \n EstTime:  ${DD.EstTime} \n Delay: ${DD.Delay} \n StartingLocation: ${DD.StartingLocation} \n Destination:  ${DD.Destination} \n URL: ${Proof.URL} \n Hash: ${Proof.Hash} \n Type: ${Veh.Type}  \n ID: ${Veh.ID} \n Timestamp: ${Timestamp}'}
-			//'DD':{'<>':'li','text':'${DD.EstTime} ${DD.Delay} ${DD.StartingLocation} ${DD.Destination}'},
-			//'Proof':{'<>':'li','text':'${Proof.URL} ${Proof.Hash}'},
-		//let transforms2 = {
 		  let obj2 = JSON.parse(ret2);
 			console.log(obj2);
-		//let html = json2html.transform(obj2,transforms);
 	  res.write(JSON.stringify(obj2,null,'\t'));
 	  return res.end();
-	 /*
-	  fs.readFile(filename, function(err, data) {
-		  if (err) {
-			res.writeHead(404, {'Content-Type': 'application/json'});
-			return res.end("404 Not Found");
-		  }  
-		  res.writeHead(200, {'Content-Type': 'application/json'});
-		  res.write(data);
-		  return res.end();
-	  });
-		*/
-	  //var txt = q.year + " " + q.month;
 	}).listen(8080);
 	console.log('disconect');
 }
