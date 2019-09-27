@@ -50,17 +50,10 @@ async function main() {
 
   // Main try/catch block
   try {
-
-    // Specify userName for network access
-    // const userName = 'isabella.issuer@magnetocorp.com';
-	  //
     const userName = 'Admin@org1.example.com';
 
     // Load connection profile; will be used to locate a gateway
-	  //
     let connectionProfile = yaml.safeLoad(fs.readFileSync('../gateway/networkConnection.yaml', 'utf8'));
-	  //
-    //let client = Client.loadFromConfig('../gateway/networkConnection.yaml')
 
     // Set connection options; identity and wallet
     let connectionOptions = {
@@ -74,17 +67,14 @@ async function main() {
 
     await gateway.connect(connectionProfile, connectionOptions);
 
-    // Access PaperNet network
     console.log('Use network channel: mychannel.');
 
     const network = await gateway.getNetwork('mychannel');
 
-    // Get addressability to commercial paper contract
     console.log('Use org.papernet.commercialpaper smart contract.');
 
     const contract = await network.getContract('scthreediff6');
 
-    // issue commercial paper
     console.log('Submit commercial paper issue transaction.');
 
     const listener = await network.addBlockListener('my-block-listener', (error, block) => {
@@ -92,9 +82,6 @@ async function main() {
         console.error(error);
         return;
     }
-	//console.log(Object.getOwnPropertyNames(block.data.data[0].payload.data.actions[0].payload.action.proposal_response_payload.extension.events.payload));//action.proposal_response_payload.extension.response.payload);
-	//console.log((block.data.data[0].payload.data.actions[0].payload.action.proposal_response_payload.extension.events.tx_id));//action.proposal_response_payload.extension.response.payload);
-	//console.log((block.data.data[0].payload.data.actions[0].payload.action.proposal_response_payload.extension.events.event_name));//action.proposal_response_payload.extension.response.payload);
 		let data =  '\nblock_number: ' + block.header.number+', block_data_hash: '+block.header.data_hash+ ',block_previous_hash: ' +block.header.previous_hash + '\n';
 		fs.writeFile('blocks',data,(err)=> {
 		  if (err) console.log(err);
@@ -146,7 +133,6 @@ async function main() {
 	
 		resp = await transferCrude(contract,i)
 		console.log(resp);
-		//let sleep = ms => new Promise(resolve => setTimeout(resolve, 10));
 		resp = await refineRand(contract,i,i);
 		console.log(resp);
 		resp = await addFuelOrderRand(contract,forder_count++,i);
@@ -162,9 +148,7 @@ async function main() {
 		console.log(resp);
 		resp = await transferFuel(contract,forders[0],i)
 		console.log(resp);
-		//resp = await transferFuel(contract,forders[1],i)
 		console.log(resp);
-		//resp = await queryAsset(contract,'Crude1');
 	}
 
   } catch (error) {

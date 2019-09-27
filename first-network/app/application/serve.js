@@ -19,12 +19,8 @@ const fs = require('fs');
 const yaml = require('js-yaml');
 const { FileSystemWallet, Gateway } = require('fabric-network');
 const Client = require('fabric-client')
-//const CommercialPaper = require('../contract/lib/paper.js');
 
 // A wallet stores a collection of identities for use
-//const wallet = new FileSystemWallet('../user/isabella/wallet');
-
-
 const wallet = new FileSystemWallet('../identity/user/loukas/wallet');
 
 
@@ -40,17 +36,10 @@ async function main() {
   // Main try/catch block
   try {
 
-    // Specify userName for network access
-    // const userName = 'isabella.issuer@magnetocorp.com';
-	  //
     const userName = 'Admin@org1.example.com';
 
     // Load connection profile; will be used to locate a gateway
-	  //
     let connectionProfile = yaml.safeLoad(fs.readFileSync('../gateway/networkConnection.yaml', 'utf8'));
-	  //
-    //let client = Client.loadFromConfig('../gateway/networkConnection.yaml')
-
     // Set connection options; identity and wallet
     let connectionOptions = {
       identity: userName,
@@ -98,7 +87,6 @@ async function main() {
 
     // Disconnect from the gateway
     console.log('Disconnect from Fabric gateway.')
-    //gateway.disconnect();
 
   }
 }
@@ -175,7 +163,6 @@ async function queryAsset(contract,asset_id) {
 	try {
 	let resp = await contract.submitTransaction('queryAsset',asset_id);
 		return resp;
-	//respond to client 
 	}
 	catch (error) {
 		console.log(`Error processing transaction. ${error}`);
