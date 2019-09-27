@@ -27,7 +27,8 @@ COUNTER=1
 MAX_RETRY=10
 
 CC_SRC_PATH="github.com/chaincode/supply_chain/supply_chain_CC/twoOrgs/"
-CC_SRC_PATH2="github.com/chaincode/supply_chain/supply_chain_CC/threeOrgs2/threeOrgs/"
+#CC_SRC_PATH2="github.com/chaincode/supply_chain/supply_chain_CC/threeOrgs2/threeOrgs/"
+CC_SRC_PATH2="github.com/chaincode/supply_chainCode/"
 
 if [ "$LANGUAGE" = "node" ]; then
 	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode/chaincode_example02/node/"

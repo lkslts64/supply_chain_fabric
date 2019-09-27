@@ -10,3 +10,4 @@
 /app/application/Plans
 /go-app/*
 /supply_chainCode/all-orgsCC
+/scripts/log*
