@@ -32,5 +32,5 @@ In order to make transactions and query the network with the SDK:
 Now you are ready to transact with the blockchain. 
 5) Run issue.js to update the blockchain and after serve.js to query/update the blockchain.
 
-
+For more information about the project, see REPORT.pdf
 
