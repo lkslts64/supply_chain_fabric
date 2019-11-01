@@ -1,51 +1,51 @@
-[36m2019-09-27 12:17:48.029 UTC [viperutil] getKeysRecursively -> DEBU 001[0m Found map[string]interface{} value for peer.BCCSP
-[36m2019-09-27 12:17:48.029 UTC [viperutil] unmarshalJSON -> DEBU 002[0m Unmarshal JSON: value cannot be unmarshalled: invalid character 'S' looking for beginning of value
-[36m2019-09-27 12:17:48.029 UTC [viperutil] getKeysRecursively -> DEBU 003[0m Found real value for peer.BCCSP.Default setting to string SW
-[36m2019-09-27 12:17:48.030 UTC [viperutil] getKeysRecursively -> DEBU 004[0m Found map[string]interface{} value for peer.BCCSP.SW
-[36m2019-09-27 12:17:48.030 UTC [viperutil] getKeysRecursively -> DEBU 005[0m Found map[string]interface{} value for peer.BCCSP.SW.FileKeyStore
-[36m2019-09-27 12:17:48.030 UTC [viperutil] unmarshalJSON -> DEBU 006[0m Unmarshal JSON: value cannot be unmarshalled: unexpected end of JSON input
-[36m2019-09-27 12:17:48.030 UTC [viperutil] getKeysRecursively -> DEBU 007[0m Found real value for peer.BCCSP.SW.FileKeyStore.KeyStore setting to string 
-[36m2019-09-27 12:17:48.030 UTC [viperutil] unmarshalJSON -> DEBU 008[0m Unmarshal JSON: value cannot be unmarshalled: invalid character 'S' looking for beginning of value
-[36m2019-09-27 12:17:48.030 UTC [viperutil] getKeysRecursively -> DEBU 009[0m Found real value for peer.BCCSP.SW.Hash setting to string SHA2
-[36m2019-09-27 12:17:48.030 UTC [viperutil] unmarshalJSON -> DEBU 00a[0m Unmarshal JSON: value is not a string: 256
-[36m2019-09-27 12:17:48.030 UTC [viperutil] getKeysRecursively -> DEBU 00b[0m Found real value for peer.BCCSP.SW.Security setting to int 256
-[36m2019-09-27 12:17:48.030 UTC [viperutil] getKeysRecursively -> DEBU 00c[0m Found map[string]interface{} value for peer.BCCSP.PKCS11
-[36m2019-09-27 12:17:48.030 UTC [viperutil] unmarshalJSON -> DEBU 00d[0m Unmarshal JSON: value is not a string: <nil>
-[36m2019-09-27 12:17:48.030 UTC [viperutil] getKeysRecursively -> DEBU 00e[0m Found real value for peer.BCCSP.PKCS11.Hash setting to <nil> <nil>
-[36m2019-09-27 12:17:48.030 UTC [viperutil] unmarshalJSON -> DEBU 00f[0m Unmarshal JSON: value is not a string: <nil>
-[36m2019-09-27 12:17:48.030 UTC [viperutil] getKeysRecursively -> DEBU 010[0m Found real value for peer.BCCSP.PKCS11.Security setting to <nil> <nil>
-[36m2019-09-27 12:17:48.030 UTC [viperutil] getKeysRecursively -> DEBU 011[0m Found map[string]interface{} value for peer.BCCSP.PKCS11.FileKeyStore
-[36m2019-09-27 12:17:48.030 UTC [viperutil] unmarshalJSON -> DEBU 012[0m Unmarshal JSON: value is not a string: <nil>
-[36m2019-09-27 12:17:48.031 UTC [viperutil] getKeysRecursively -> DEBU 013[0m Found real value for peer.BCCSP.PKCS11.FileKeyStore.KeyStore setting to <nil> <nil>
-[36m2019-09-27 12:17:48.031 UTC [viperutil] unmarshalJSON -> DEBU 014[0m Unmarshal JSON: value is not a string: <nil>
-[36m2019-09-27 12:17:48.031 UTC [viperutil] getKeysRecursively -> DEBU 015[0m Found real value for peer.BCCSP.PKCS11.Library setting to <nil> <nil>
-[36m2019-09-27 12:17:48.031 UTC [viperutil] unmarshalJSON -> DEBU 016[0m Unmarshal JSON: value is not a string: <nil>
-[36m2019-09-27 12:17:48.031 UTC [viperutil] getKeysRecursively -> DEBU 017[0m Found real value for peer.BCCSP.PKCS11.Label setting to <nil> <nil>
-[36m2019-09-27 12:17:48.031 UTC [viperutil] unmarshalJSON -> DEBU 018[0m Unmarshal JSON: value is not a string: <nil>
-[36m2019-09-27 12:17:48.031 UTC [viperutil] getKeysRecursively -> DEBU 019[0m Found real value for peer.BCCSP.PKCS11.Pin setting to <nil> <nil>
-[36m2019-09-27 12:17:48.031 UTC [viperutil] EnhancedExactUnmarshalKey -> DEBU 01a[0m map[peer.BCCSP:map[SW:map[Security:256 FileKeyStore:map[KeyStore:] Hash:SHA2] PKCS11:map[Hash:<nil> Security:<nil> FileKeyStore:map[KeyStore:<nil>] Library:<nil> Label:<nil> Pin:<nil>] Default:SW]]
-[36m2019-09-27 12:17:48.031 UTC [bccsp_sw] openKeyStore -> DEBU 01b[0m KeyStore opened at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore]...done
-[36m2019-09-27 12:17:48.031 UTC [bccsp] initBCCSP -> DEBU 01c[0m Initialize BCCSP [SW]
-[36m2019-09-27 12:17:48.031 UTC [msp] getPemMaterialFromDir -> DEBU 01d[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts
-[36m2019-09-27 12:17:48.031 UTC [msp] getPemMaterialFromDir -> DEBU 01e[0m Inspecting file /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
-[36m2019-09-27 12:17:48.031 UTC [msp] getPemMaterialFromDir -> DEBU 01f[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/cacerts
-[36m2019-09-27 12:17:48.032 UTC [msp] getPemMaterialFromDir -> DEBU 020[0m Inspecting file /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/cacerts/ca.org1.example.com-cert.pem
-[36m2019-09-27 12:17:48.032 UTC [msp] getPemMaterialFromDir -> DEBU 021[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/admincerts
-[36m2019-09-27 12:17:48.032 UTC [msp] getPemMaterialFromDir -> DEBU 022[0m Inspecting file /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/admincerts/Admin@org1.example.com-cert.pem
-[36m2019-09-27 12:17:48.032 UTC [msp] getPemMaterialFromDir -> DEBU 023[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/intermediatecerts
-[36m2019-09-27 12:17:48.032 UTC [msp] getMspConfig -> DEBU 024[0m Intermediate certs folder not found at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/intermediatecerts]. Skipping. [stat /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/intermediatecerts: no such file or directory]
-[36m2019-09-27 12:17:48.032 UTC [msp] getPemMaterialFromDir -> DEBU 025[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlscacerts
-[36m2019-09-27 12:17:48.032 UTC [msp] getPemMaterialFromDir -> DEBU 026[0m Inspecting file /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
-[36m2019-09-27 12:17:48.032 UTC [msp] getPemMaterialFromDir -> DEBU 027[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlsintermediatecerts
-[36m2019-09-27 12:17:48.032 UTC [msp] getMspConfig -> DEBU 028[0m TLS intermediate certs folder not found at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlsintermediatecerts]. Skipping. [stat /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlsintermediatecerts: no such file or directory]
-[36m2019-09-27 12:17:48.032 UTC [msp] getPemMaterialFromDir -> DEBU 029[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/crls
-[36m2019-09-27 12:17:48.032 UTC [msp] getMspConfig -> DEBU 02a[0m crls folder not found at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/crls]. Skipping. [stat /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/crls: no such file or directory]
-[36m2019-09-27 12:17:48.032 UTC [msp] getMspConfig -> DEBU 02b[0m MSP configuration file not found at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/config.yaml]: [stat /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/config.yaml: no such file or directory]
-[36m2019-09-27 12:17:48.032 UTC [msp] newBccspMsp -> DEBU 02c[0m Creating BCCSP-based MSP instance
-[36m2019-09-27 12:17:48.032 UTC [msp] New -> DEBU 02d[0m Creating Cache-MSP instance
-[36m2019-09-27 12:17:48.032 UTC [msp] loadLocaMSP -> DEBU 02e[0m Created new local MSP
-[36m2019-09-27 12:17:48.032 UTC [msp] Setup -> DEBU 02f[0m Setting up MSP instance Org1MSP
-[36m2019-09-27 12:17:48.033 UTC [msp.identity] newIdentity -> DEBU 030[0m Creating identity instance for cert -----BEGIN CERTIFICATE-----
+[36m2019-09-30 13:10:31.649 UTC [viperutil] getKeysRecursively -> DEBU 001[0m Found map[string]interface{} value for peer.BCCSP
+[36m2019-09-30 13:10:31.650 UTC [viperutil] unmarshalJSON -> DEBU 002[0m Unmarshal JSON: value cannot be unmarshalled: invalid character 'S' looking for beginning of value
+[36m2019-09-30 13:10:31.650 UTC [viperutil] getKeysRecursively -> DEBU 003[0m Found real value for peer.BCCSP.Default setting to string SW
+[36m2019-09-30 13:10:31.650 UTC [viperutil] getKeysRecursively -> DEBU 004[0m Found map[string]interface{} value for peer.BCCSP.SW
+[36m2019-09-30 13:10:31.650 UTC [viperutil] getKeysRecursively -> DEBU 005[0m Found map[string]interface{} value for peer.BCCSP.SW.FileKeyStore
+[36m2019-09-30 13:10:31.650 UTC [viperutil] unmarshalJSON -> DEBU 006[0m Unmarshal JSON: value cannot be unmarshalled: unexpected end of JSON input
+[36m2019-09-30 13:10:31.650 UTC [viperutil] getKeysRecursively -> DEBU 007[0m Found real value for peer.BCCSP.SW.FileKeyStore.KeyStore setting to string 
+[36m2019-09-30 13:10:31.650 UTC [viperutil] unmarshalJSON -> DEBU 008[0m Unmarshal JSON: value cannot be unmarshalled: invalid character 'S' looking for beginning of value
+[36m2019-09-30 13:10:31.650 UTC [viperutil] getKeysRecursively -> DEBU 009[0m Found real value for peer.BCCSP.SW.Hash setting to string SHA2
+[36m2019-09-30 13:10:31.650 UTC [viperutil] unmarshalJSON -> DEBU 00a[0m Unmarshal JSON: value is not a string: 256
+[36m2019-09-30 13:10:31.650 UTC [viperutil] getKeysRecursively -> DEBU 00b[0m Found real value for peer.BCCSP.SW.Security setting to int 256
+[36m2019-09-30 13:10:31.650 UTC [viperutil] getKeysRecursively -> DEBU 00c[0m Found map[string]interface{} value for peer.BCCSP.PKCS11
+[36m2019-09-30 13:10:31.650 UTC [viperutil] unmarshalJSON -> DEBU 00d[0m Unmarshal JSON: value is not a string: <nil>
+[36m2019-09-30 13:10:31.650 UTC [viperutil] getKeysRecursively -> DEBU 00e[0m Found real value for peer.BCCSP.PKCS11.Label setting to <nil> <nil>
+[36m2019-09-30 13:10:31.650 UTC [viperutil] unmarshalJSON -> DEBU 00f[0m Unmarshal JSON: value is not a string: <nil>
+[36m2019-09-30 13:10:31.650 UTC [viperutil] getKeysRecursively -> DEBU 010[0m Found real value for peer.BCCSP.PKCS11.Pin setting to <nil> <nil>
+[36m2019-09-30 13:10:31.651 UTC [viperutil] unmarshalJSON -> DEBU 011[0m Unmarshal JSON: value is not a string: <nil>
+[36m2019-09-30 13:10:31.651 UTC [viperutil] getKeysRecursively -> DEBU 012[0m Found real value for peer.BCCSP.PKCS11.Hash setting to <nil> <nil>
+[36m2019-09-30 13:10:31.651 UTC [viperutil] unmarshalJSON -> DEBU 013[0m Unmarshal JSON: value is not a string: <nil>
+[36m2019-09-30 13:10:31.651 UTC [viperutil] getKeysRecursively -> DEBU 014[0m Found real value for peer.BCCSP.PKCS11.Security setting to <nil> <nil>
+[36m2019-09-30 13:10:31.651 UTC [viperutil] getKeysRecursively -> DEBU 015[0m Found map[string]interface{} value for peer.BCCSP.PKCS11.FileKeyStore
+[36m2019-09-30 13:10:31.651 UTC [viperutil] unmarshalJSON -> DEBU 016[0m Unmarshal JSON: value is not a string: <nil>
+[36m2019-09-30 13:10:31.651 UTC [viperutil] getKeysRecursively -> DEBU 017[0m Found real value for peer.BCCSP.PKCS11.FileKeyStore.KeyStore setting to <nil> <nil>
+[36m2019-09-30 13:10:31.651 UTC [viperutil] unmarshalJSON -> DEBU 018[0m Unmarshal JSON: value is not a string: <nil>
+[36m2019-09-30 13:10:31.651 UTC [viperutil] getKeysRecursively -> DEBU 019[0m Found real value for peer.BCCSP.PKCS11.Library setting to <nil> <nil>
+[36m2019-09-30 13:10:31.651 UTC [viperutil] EnhancedExactUnmarshalKey -> DEBU 01a[0m map[peer.BCCSP:map[Default:SW SW:map[FileKeyStore:map[KeyStore:] Hash:SHA2 Security:256] PKCS11:map[Label:<nil> Pin:<nil> Hash:<nil> Security:<nil> FileKeyStore:map[KeyStore:<nil>] Library:<nil>]]]
+[36m2019-09-30 13:10:31.652 UTC [bccsp_sw] openKeyStore -> DEBU 01b[0m KeyStore opened at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore]...done
+[36m2019-09-30 13:10:31.652 UTC [bccsp] initBCCSP -> DEBU 01c[0m Initialize BCCSP [SW]
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 01d[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 01e[0m Inspecting file /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/Admin@org1.example.com-cert.pem
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 01f[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/cacerts
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 020[0m Inspecting file /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/cacerts/ca.org1.example.com-cert.pem
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 021[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/admincerts
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 022[0m Inspecting file /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/admincerts/Admin@org1.example.com-cert.pem
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 023[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/intermediatecerts
+[36m2019-09-30 13:10:31.652 UTC [msp] getMspConfig -> DEBU 024[0m Intermediate certs folder not found at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/intermediatecerts]. Skipping. [stat /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/intermediatecerts: no such file or directory]
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 025[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlscacerts
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 026[0m Inspecting file /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 027[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlsintermediatecerts
+[36m2019-09-30 13:10:31.652 UTC [msp] getMspConfig -> DEBU 028[0m TLS intermediate certs folder not found at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlsintermediatecerts]. Skipping. [stat /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/tlsintermediatecerts: no such file or directory]
+[36m2019-09-30 13:10:31.652 UTC [msp] getPemMaterialFromDir -> DEBU 029[0m Reading directory /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/crls
+[36m2019-09-30 13:10:31.652 UTC [msp] getMspConfig -> DEBU 02a[0m crls folder not found at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/crls]. Skipping. [stat /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/crls: no such file or directory]
+[36m2019-09-30 13:10:31.652 UTC [msp] getMspConfig -> DEBU 02b[0m MSP configuration file not found at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/config.yaml]: [stat /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/config.yaml: no such file or directory]
+[36m2019-09-30 13:10:31.653 UTC [msp] newBccspMsp -> DEBU 02c[0m Creating BCCSP-based MSP instance
+[36m2019-09-30 13:10:31.653 UTC [msp] New -> DEBU 02d[0m Creating Cache-MSP instance
+[36m2019-09-30 13:10:31.653 UTC [msp] loadLocaMSP -> DEBU 02e[0m Created new local MSP
+[36m2019-09-30 13:10:31.653 UTC [msp] Setup -> DEBU 02f[0m Setting up MSP instance Org1MSP
+[36m2019-09-30 13:10:31.653 UTC [msp.identity] newIdentity -> DEBU 030[0m Creating identity instance for cert -----BEGIN CERTIFICATE-----
 MIICUjCCAfigAwIBAgIRAI/9E4IAN4skDbDDi3sh5AgwCgYIKoZIzj0EAwIwczEL
 MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
 cmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh
@@ -60,7 +60,7 @@ GeSgKoKRcAmDq+y6WTs5vqn1fGtlUa+f030Zm2x4wYIwCgYIKoZIzj0EAwIDSAAw
 RQIhAJzbdMc4eR2RvEqDyR6E+S4GUDigxwCTwpG3Ylinz3iCAiB1sbT+jILNRsd2
 4GNNoAUnHLVIlP1HuKaidLkVYYa04A==
 -----END CERTIFICATE-----
-[36m2019-09-27 12:17:48.033 UTC [msp.identity] newIdentity -> DEBU 031[0m Creating identity instance for cert -----BEGIN CERTIFICATE-----
+[36m2019-09-30 13:10:31.653 UTC [msp.identity] newIdentity -> DEBU 031[0m Creating identity instance for cert -----BEGIN CERTIFICATE-----
 MIICKjCCAdGgAwIBAgIRAMJa1bOsbqR5ihFqj3I2i/owCgYIKoZIzj0EAwIwczEL
 MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
 cmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh
@@ -74,7 +74,7 @@ VR0jBCQwIoAgGeSgKoKRcAmDq+y6WTs5vqn1fGtlUa+f030Zm2x4wYIwCgYIKoZI
 zj0EAwIDRwAwRAIgHeq6uX1t+d2en4+4g9E7R2J/sl+VFnSPbiWbHLvIbqACIGCj
 MVwiJ374C3Td92fTpl1f0f+wB+lSMkJtjOMkgKwj
 -----END CERTIFICATE-----
-[36m2019-09-27 12:17:48.033 UTC [msp.identity] newIdentity -> DEBU 032[0m Creating identity instance for cert -----BEGIN CERTIFICATE-----
+[36m2019-09-30 13:10:31.653 UTC [msp.identity] newIdentity -> DEBU 032[0m Creating identity instance for cert -----BEGIN CERTIFICATE-----
 MIICKjCCAdGgAwIBAgIRAMJa1bOsbqR5ihFqj3I2i/owCgYIKoZIzj0EAwIwczEL
 MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
 cmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh
@@ -88,8 +88,8 @@ VR0jBCQwIoAgGeSgKoKRcAmDq+y6WTs5vqn1fGtlUa+f030Zm2x4wYIwCgYIKoZI
 zj0EAwIDRwAwRAIgHeq6uX1t+d2en4+4g9E7R2J/sl+VFnSPbiWbHLvIbqACIGCj
 MVwiJ374C3Td92fTpl1f0f+wB+lSMkJtjOMkgKwj
 -----END CERTIFICATE-----
-[36m2019-09-27 12:17:48.033 UTC [bccsp_sw] loadPrivateKey -> DEBU 033[0m Loading private key [ba2caac2ba72b9fd9b047fc51fbf82a76acbe56facbca24fa1af77c1cbcbb5cc] at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/ba2caac2ba72b9fd9b047fc51fbf82a76acbe56facbca24fa1af77c1cbcbb5cc_sk]...
-[36m2019-09-27 12:17:48.033 UTC [msp.identity] newIdentity -> DEBU 034[0m Creating identity instance for cert -----BEGIN CERTIFICATE-----
+[36m2019-09-30 13:10:31.653 UTC [bccsp_sw] loadPrivateKey -> DEBU 033[0m Loading private key [ba2caac2ba72b9fd9b047fc51fbf82a76acbe56facbca24fa1af77c1cbcbb5cc] at [/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/ba2caac2ba72b9fd9b047fc51fbf82a76acbe56facbca24fa1af77c1cbcbb5cc_sk]...
+[36m2019-09-30 13:10:31.653 UTC [msp.identity] newIdentity -> DEBU 034[0m Creating identity instance for cert -----BEGIN CERTIFICATE-----
 MIICKjCCAdGgAwIBAgIRAMJa1bOsbqR5ihFqj3I2i/owCgYIKoZIzj0EAwIwczEL
 MAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAUBgNVBAcTDVNhbiBG
 cmFuY2lzY28xGTAXBgNVBAoTEG9yZzEuZXhhbXBsZS5jb20xHDAaBgNVBAMTE2Nh
@@ -103,34 +103,34 @@ VR0jBCQwIoAgGeSgKoKRcAmDq+y6WTs5vqn1fGtlUa+f030Zm2x4wYIwCgYIKoZI
 zj0EAwIDRwAwRAIgHeq6uX1t+d2en4+4g9E7R2J/sl+VFnSPbiWbHLvIbqACIGCj
 MVwiJ374C3Td92fTpl1f0f+wB+lSMkJtjOMkgKwj
 -----END CERTIFICATE-----
-[36m2019-09-27 12:17:48.033 UTC [msp] setupSigningIdentity -> DEBU 035[0m Signing identity expires at 2029-07-26 08:26:00 +0000 UTC
-[36m2019-09-27 12:17:48.034 UTC [msp] Validate -> DEBU 036[0m MSP Org1MSP validating identity
-[36m2019-09-27 12:17:48.034 UTC [grpc] DialContext -> DEBU 037[0m parsed scheme: ""
-[36m2019-09-27 12:17:48.034 UTC [grpc] DialContext -> DEBU 038[0m scheme "" not registered, fallback to default scheme
-[36m2019-09-27 12:17:48.034 UTC [grpc] watcher -> DEBU 039[0m ccResolverWrapper: sending new addresses to cc: [{peer0.org1.example.com:7051 0  <nil>}]
-[36m2019-09-27 12:17:48.034 UTC [grpc] switchBalancer -> DEBU 03a[0m ClientConn switching balancer to "pick_first"
-[36m2019-09-27 12:17:48.034 UTC [grpc] HandleSubConnStateChange -> DEBU 03b[0m pickfirstBalancer: HandleSubConnStateChange: 0xc0004c0160, CONNECTING
-[36m2019-09-27 12:17:48.036 UTC [grpc] HandleSubConnStateChange -> DEBU 03c[0m pickfirstBalancer: HandleSubConnStateChange: 0xc0004c0160, READY
-[36m2019-09-27 12:17:48.037 UTC [grpc] DialContext -> DEBU 03d[0m parsed scheme: ""
-[36m2019-09-27 12:17:48.037 UTC [grpc] DialContext -> DEBU 03e[0m scheme "" not registered, fallback to default scheme
-[36m2019-09-27 12:17:48.037 UTC [grpc] watcher -> DEBU 03f[0m ccResolverWrapper: sending new addresses to cc: [{peer0.org1.example.com:7051 0  <nil>}]
-[36m2019-09-27 12:17:48.037 UTC [grpc] switchBalancer -> DEBU 040[0m ClientConn switching balancer to "pick_first"
-[36m2019-09-27 12:17:48.037 UTC [grpc] HandleSubConnStateChange -> DEBU 041[0m pickfirstBalancer: HandleSubConnStateChange: 0xc000347170, CONNECTING
-[36m2019-09-27 12:17:48.039 UTC [grpc] HandleSubConnStateChange -> DEBU 042[0m pickfirstBalancer: HandleSubConnStateChange: 0xc000347170, READY
-[36m2019-09-27 12:17:48.040 UTC [msp] GetDefaultSigningIdentity -> DEBU 043[0m Obtaining default signing identity
-[36m2019-09-27 12:17:48.040 UTC [grpc] DialContext -> DEBU 044[0m parsed scheme: ""
-[36m2019-09-27 12:17:48.040 UTC [grpc] DialContext -> DEBU 045[0m scheme "" not registered, fallback to default scheme
-[36m2019-09-27 12:17:48.040 UTC [grpc] watcher -> DEBU 046[0m ccResolverWrapper: sending new addresses to cc: [{orderer.example.com:7050 0  <nil>}]
-[36m2019-09-27 12:17:48.040 UTC [grpc] switchBalancer -> DEBU 047[0m ClientConn switching balancer to "pick_first"
-[36m2019-09-27 12:17:48.040 UTC [grpc] HandleSubConnStateChange -> DEBU 048[0m pickfirstBalancer: HandleSubConnStateChange: 0xc0004eba60, CONNECTING
-[36m2019-09-27 12:17:48.041 UTC [grpc] HandleSubConnStateChange -> DEBU 049[0m pickfirstBalancer: HandleSubConnStateChange: 0xc0004eba60, READY
-[34m2019-09-27 12:17:48.042 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 04a[0m Using default escc
-[34m2019-09-27 12:17:48.042 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 04b[0m Using default vscc
-[36m2019-09-27 12:17:48.042 UTC [chaincodeCmd] upgrade -> DEBU 04c[0m Get upgrade proposal for chaincode <name:"scthreediff6" version:"8.2" >
-[36m2019-09-27 12:17:48.042 UTC [msp.identity] Sign -> DEBU 04d[0m Sign: plaintext: 0ABE070A6608031A0B08ECFBB7EC0510...535010030A04657363630A0476736363 
-[36m2019-09-27 12:17:48.042 UTC [msp.identity] Sign -> DEBU 04e[0m Sign: digest: 9819980DEDB050011E69EA988D502A0AF92F77EA0C579B90A0A7B8E38095E3E3 
-[36m2019-09-27 12:17:50.703 UTC [chaincodeCmd] upgrade -> DEBU 04f[0m endorse upgrade proposal, get response <status:200 payload:"\n\014scthreediff6\022\0038.2\032\004escc\"\004vscc*x\022\034\022\032\010\001\022\002\010\000\022\002\010\001\022\002\010\002\022\002\010\003\022\002\010\004\022\002\010\005\032\r\022\013\n\007Org1MSP\020\003\032\r\022\013\n\007Org2MSP\020\003\032\r\022\013\n\007Org3MSP\020\003\032\r\022\013\n\007Org4MSP\020\003\032\r\022\013\n\007Org5MSP\020\003\032\r\022\013\n\007Org6MSP\020\0032D\n \336\217%N\266\031\022\016V2\004%\024\225\332\356\225\356\240\232\332\336\261%\014&N\355\213\346D\214\022 \361\253\256rv\357\305\270\205L9\\\201\307\334\010\354{y\024\330\201\233m\314\254f\363:\276\027\364: 0p8\357\313/\203;\257\253\003D\375&\354\307\241\266\232\335\207]\0054T\344z\362\315\036\032\231Bx\022\034\022\032\010\001\022\002\010\000\022\002\010\001\022\002\010\002\022\002\010\003\022\002\010\004\022\002\010\005\032\r\022\013\n\007Org1MSP\020\001\032\r\022\013\n\007Org2MSP\020\001\032\r\022\013\n\007Org3MSP\020\001\032\r\022\013\n\007Org4MSP\020\001\032\r\022\013\n\007Org5MSP\020\001\032\r\022\013\n\007Org6MSP\020\001" >
-[36m2019-09-27 12:17:50.703 UTC [msp.identity] Sign -> DEBU 050[0m Sign: plaintext: 0ABE070A6608031A0B08ECFBB7EC0510...0DFD01F2067CDEACB2331E40A63F24AB 
-[36m2019-09-27 12:17:50.703 UTC [msp.identity] Sign -> DEBU 051[0m Sign: digest: 42551D73E8B0309A0D5420E09AAB71C1569858D53CB74CBEBF6CB946C13DB9B3 
-[36m2019-09-27 12:17:50.704 UTC [chaincodeCmd] upgrade -> DEBU 052[0m Get Signed envelope
-[36m2019-09-27 12:17:50.704 UTC [chaincodeCmd] chaincodeUpgrade -> DEBU 053[0m Send signed envelope to orderer
+[36m2019-09-30 13:10:31.654 UTC [msp] setupSigningIdentity -> DEBU 035[0m Signing identity expires at 2029-07-26 08:26:00 +0000 UTC
+[36m2019-09-30 13:10:31.654 UTC [msp] Validate -> DEBU 036[0m MSP Org1MSP validating identity
+[36m2019-09-30 13:10:31.654 UTC [grpc] DialContext -> DEBU 037[0m parsed scheme: ""
+[36m2019-09-30 13:10:31.654 UTC [grpc] DialContext -> DEBU 038[0m scheme "" not registered, fallback to default scheme
+[36m2019-09-30 13:10:31.654 UTC [grpc] watcher -> DEBU 039[0m ccResolverWrapper: sending new addresses to cc: [{peer0.org1.example.com:7051 0  <nil>}]
+[36m2019-09-30 13:10:31.654 UTC [grpc] switchBalancer -> DEBU 03a[0m ClientConn switching balancer to "pick_first"
+[36m2019-09-30 13:10:31.654 UTC [grpc] HandleSubConnStateChange -> DEBU 03b[0m pickfirstBalancer: HandleSubConnStateChange: 0xc0002cee00, CONNECTING
+[36m2019-09-30 13:10:31.656 UTC [grpc] HandleSubConnStateChange -> DEBU 03c[0m pickfirstBalancer: HandleSubConnStateChange: 0xc0002cee00, READY
+[36m2019-09-30 13:10:31.657 UTC [grpc] DialContext -> DEBU 03d[0m parsed scheme: ""
+[36m2019-09-30 13:10:31.657 UTC [grpc] DialContext -> DEBU 03e[0m scheme "" not registered, fallback to default scheme
+[36m2019-09-30 13:10:31.657 UTC [grpc] watcher -> DEBU 03f[0m ccResolverWrapper: sending new addresses to cc: [{peer0.org1.example.com:7051 0  <nil>}]
+[36m2019-09-30 13:10:31.657 UTC [grpc] switchBalancer -> DEBU 040[0m ClientConn switching balancer to "pick_first"
+[36m2019-09-30 13:10:31.657 UTC [grpc] HandleSubConnStateChange -> DEBU 041[0m pickfirstBalancer: HandleSubConnStateChange: 0xc000318150, CONNECTING
+[36m2019-09-30 13:10:31.658 UTC [grpc] HandleSubConnStateChange -> DEBU 042[0m pickfirstBalancer: HandleSubConnStateChange: 0xc000318150, READY
+[36m2019-09-30 13:10:31.659 UTC [msp] GetDefaultSigningIdentity -> DEBU 043[0m Obtaining default signing identity
+[36m2019-09-30 13:10:31.659 UTC [grpc] DialContext -> DEBU 044[0m parsed scheme: ""
+[36m2019-09-30 13:10:31.659 UTC [grpc] DialContext -> DEBU 045[0m scheme "" not registered, fallback to default scheme
+[36m2019-09-30 13:10:31.659 UTC [grpc] watcher -> DEBU 046[0m ccResolverWrapper: sending new addresses to cc: [{orderer.example.com:7050 0  <nil>}]
+[36m2019-09-30 13:10:31.659 UTC [grpc] switchBalancer -> DEBU 047[0m ClientConn switching balancer to "pick_first"
+[36m2019-09-30 13:10:31.659 UTC [grpc] HandleSubConnStateChange -> DEBU 048[0m pickfirstBalancer: HandleSubConnStateChange: 0xc0003ac770, CONNECTING
+[36m2019-09-30 13:10:31.661 UTC [grpc] HandleSubConnStateChange -> DEBU 049[0m pickfirstBalancer: HandleSubConnStateChange: 0xc0003ac770, READY
+[34m2019-09-30 13:10:31.661 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 04a[0m Using default escc
+[34m2019-09-30 13:10:31.661 UTC [chaincodeCmd] checkChaincodeCmdParams -> INFO 04b[0m Using default vscc
+[36m2019-09-30 13:10:31.661 UTC [chaincodeCmd] upgrade -> DEBU 04c[0m Get upgrade proposal for chaincode <name:"scthreediff6" version:"8.0" >
+[36m2019-09-30 13:10:31.661 UTC [msp.identity] Sign -> DEBU 04d[0m Sign: plaintext: 0ABF070A6708031A0C08C7FDC7EC0510...535010030A04657363630A0476736363 
+[36m2019-09-30 13:10:31.661 UTC [msp.identity] Sign -> DEBU 04e[0m Sign: digest: 62D4E179B2B9764CD49BBA27AB94669CCB9A42C3AA6790C993D15DCE9B5CBCF5 
+[36m2019-09-30 13:10:34.440 UTC [chaincodeCmd] upgrade -> DEBU 04f[0m endorse upgrade proposal, get response <status:200 payload:"\n\014scthreediff6\022\0038.0\032\004escc\"\004vscc*x\022\034\022\032\010\001\022\002\010\000\022\002\010\001\022\002\010\002\022\002\010\003\022\002\010\004\022\002\010\005\032\r\022\013\n\007Org1MSP\020\003\032\r\022\013\n\007Org2MSP\020\003\032\r\022\013\n\007Org3MSP\020\003\032\r\022\013\n\007Org4MSP\020\003\032\r\022\013\n\007Org5MSP\020\003\032\r\022\013\n\007Org6MSP\020\0032D\n \336\217%N\266\031\022\016V2\004%\024\225\332\356\225\356\240\232\332\336\261%\014&N\355\213\346D\214\022 R\310Pa\263\200\230\r|[\315\212UN\323\017\261O\303\250@\366%\270*\210\200z\010\323\033\352: \271\203\220\371\225\003\313\310d\252\304\301u\274\236\033?I\341\256\227dG\256}\357\nuO\324*\373Bx\022\034\022\032\010\001\022\002\010\000\022\002\010\001\022\002\010\002\022\002\010\003\022\002\010\004\022\002\010\005\032\r\022\013\n\007Org1MSP\020\001\032\r\022\013\n\007Org2MSP\020\001\032\r\022\013\n\007Org3MSP\020\001\032\r\022\013\n\007Org4MSP\020\001\032\r\022\013\n\007Org5MSP\020\001\032\r\022\013\n\007Org6MSP\020\001" >
+[36m2019-09-30 13:10:34.442 UTC [msp.identity] Sign -> DEBU 050[0m Sign: plaintext: 0ABF070A6708031A0C08C7FDC7EC0510...9BF57BC66F9CBBD4D27CFC7074F7D925 
+[36m2019-09-30 13:10:34.442 UTC [msp.identity] Sign -> DEBU 051[0m Sign: digest: E96834477E55A6C7BBA93ED8551C2C69A96D3D67BCAAF77793F509B1F60ECD64 
+[36m2019-09-30 13:10:34.442 UTC [chaincodeCmd] upgrade -> DEBU 052[0m Get Signed envelope
+[36m2019-09-30 13:10:34.442 UTC [chaincodeCmd] chaincodeUpgrade -> DEBU 053[0m Send signed envelope to orderer
